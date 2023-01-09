@@ -14,6 +14,7 @@ Obsidian Plugin for blazingly fast file switching. For people for whom using the
 <!--toc:end-->
 
 ## Features
+
 ### Star Cycler
 Goes to your most recently modified starred note. If you are already at a starred note, goes to the next starred note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. 
 
