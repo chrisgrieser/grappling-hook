@@ -35,7 +35,7 @@ export default class grapplingHookPlugin extends Plugin {
 		console.info("🪝 Grappling Hook Plugin loaded.");
 
 		this.statusbar = this.addStatusBarItem();
-		this.statusbar.setText("aaaa");
+		this.displayAlternateNote();
 		this.registerEvent(
 			// second arg needs to be arrow-function, so that `this` gets set
 			// correctly. https://discord.com/channels/686053708261228577/840286264964022302/1016341061641183282
@@ -166,7 +166,7 @@ export default class grapplingHookPlugin extends Plugin {
 			}
 			const firstStarTFile = this.pathToTFile(starredFiles[0]);
 			await this.app.vault.append(firstStarTFile, selection + "\n");
-			new Notice(`Appended to "${firstStarTFile.name}":\n\n"${selection}"`);
+			new Notice(`Appended to "${firstStarTFile.basename}":\n\n"${selection}"`);
 		}
 	}
 }
