@@ -11,9 +11,6 @@ declare module "obsidian" {
 	interface Workspace {
 		lastOpenFiles: string[]; // list of 10 most recent files
 	}
-	interface View {
-		file: TFile;
-	}
 	interface App {
 		internalPlugins: {
 			config: {
@@ -33,7 +30,7 @@ declare module "obsidian" {
 
 export default class grapplingHookPlugin extends Plugin {
 	async onload() {
-		console.log("🪝 Grappling Hook Plugin loaded.");
+		console.info("🪝 Grappling Hook Plugin loaded.");
 		this.addCommand({
 			id: "alternate-note",
 			name: "Switch to Alternate Note",
@@ -47,13 +44,15 @@ export default class grapplingHookPlugin extends Plugin {
 	}
 
 	async onunload() {
-		console.log("🪝 Grappling Hook Plugin unloaded.");
+		console.info("🪝 Grappling Hook Plugin unloaded.");
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
 	// Helpers
 
-	activeLeaf = this.app.workspace.getLeaf;
+	activeLeaf () {
+		return this.app.workspace.getLeaf();
+	}
 	pathToTFile(filepath: string) {
 		const file = this.app.vault.getAbstractFileByPath(filepath);
 		if (file instanceof TFile) return file;
@@ -82,8 +81,7 @@ export default class grapplingHookPlugin extends Plugin {
 		let nextIndex = currentIndex + 1;
 		if (nextIndex > filePathArray.length - 1) nextIndex = 0;
 		const nextFilePath = filePathArray[nextIndex];
-		const nextFile = this.pathToTFile(nextFilePath);
-		if (nextFile instanceof TFile) return nextFile;
+		return this.pathToTFile(nextFilePath);
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
@@ -104,7 +102,7 @@ export default class grapplingHookPlugin extends Plugin {
 		// cycle through starred files
 		if (selection === "") {
 			const activeLeaf = this.activeLeaf();
-			const currentFilePath = activeLeaf.view.file.path;
+			const currentFilePath = this.app.workspace.getActiveFile().path;
 			const nextFile = this.getNextTFile(starredFiles, currentFilePath);
 			if (nextFile.path === currentFilePath) {
 				new Notice("Already at the sole starred file.");
@@ -121,9 +119,7 @@ export default class grapplingHookPlugin extends Plugin {
 				return;
 			}
 			const firstStarTFile = this.pathToTFile(starredFiles[0]);
-			if (firstStarTFile instanceof TFile) {
-				await this.app.vault.append(firstStarTFile, selection + "\n");
-			}
+			await this.app.vault.append(firstStarTFile, selection + "\n");
 			new Notice(`Appended to "${firstStarTFile.name}":\n\n"${selection}"`);
 		}
 	}
@@ -133,7 +129,7 @@ export default class grapplingHookPlugin extends Plugin {
 		const recentFiles = this.app.workspace.lastOpenFiles;
 		for (const filePath of recentFiles) {
 			const altTFile = this.pathToTFile(filePath);
-			if (altTFile && altTFile instanceof TFile) {
+			if (altTFile) { // checks file existence, e.g. for deleted files
 				this.activeLeaf().openFile(altTFile);
 				return;
 			}
