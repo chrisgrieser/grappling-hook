@@ -132,6 +132,8 @@ export default class grapplingHookPlugin extends Plugin {
 	}
 
 	// Commands
+	// TODO figure out how to get the editor without editorCallback, so it also
+	// works in Reading Mode
 	async starredNotesCycler(editor: Editor) {
 		if (!this.app.internalPlugins.config.starred) {
 			new Notice("Starred Core Plugin not enabled.");
