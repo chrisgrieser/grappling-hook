@@ -63,7 +63,6 @@ rules:
     - warn
     - always
   no-whitespace-before-property: error
-  no-empty: warn
   arrow-spacing: warn
   keyword-spacing: warn
   spaced-comment:
@@ -80,7 +79,7 @@ rules:
     - ignoreChainWithDepth: 3
 
   # Async & Await
-  no-await-in-loop: error
+  no-await-in-loop: warn
   require-atomic-updates: error
 
   # Functions
