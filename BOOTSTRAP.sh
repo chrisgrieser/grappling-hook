@@ -5,7 +5,7 @@ read -r name
 
 # plugin id is the same as the git repo name and can therefore be inferred
 repo=$(git remote -v | head -n1 | sed 's/\.git.*//' | sed 's/.*://')
-id=$(echo "$repo" | cut d/ -f2)
+id=$(echo "$repo" | cut -d/ -f2)
 
 # desc can be inferred from github description (not using jq for portability)
 desc=$(curl -sL "https://api.github.com/repos/$repo" | grep "description" | head -n1 | cut -d'"' -f4)
