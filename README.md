@@ -5,16 +5,21 @@
 Obsidian Plugin for blazingly fast file switching. For people for whom using the Quick Switcher still takes too much time.
 
 ## Table of Contents
+
 <!--toc:start-->
+- [Table of Contents](#table-of-contents)
+- [Features](#features)
 - [Installation](#installation)
-- [Contribute](#contribute)
-- [About the Developer](#about-the-developer)
-	- [Profiles](#profiles)
-	- [Donate](#donate)
+- [About the developer](#about-the-developer)
 <!--toc:end-->
 
+## Features
+1. __Star Cycler A__: Goes to your most recently modified starred note. If you are already at a starred note, goes to the next starred note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. (This command is essentially a simplified implementation of the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).)
+2. __Star Cycler B__: When you have text selected, the star cycler switcher switches to its alternative mode, and sends the selected text to the last modified starred note. 
+3. __Alternate File__: Go to the last file you were at. As opposed to the `Navigate Back` command, using the `Alternate File` command moves you forward in history when you press it the second time. This allows you to rapidly switch between two files with only one hotkey. The alternate file is also displayed in the status bar. (This command is essentially an implementation of vim's `:buffer #`.)
+
 ## Installation
-Right now, the plugin is still in beta. It can be installed with the [BRAT Plugin](https://github.com/TfTHacker/obsidian42-brat).
+For now, the plugin is still in beta. It can be installed with the [BRAT Plugin](https://github.com/TfTHacker/obsidian42-brat).,
 
 When published, it will be available in Obsidian's Community Plugin Browser via: `Settings` → `Community Plugins` → `Browse` → Search for *"🪝 Grappling Hook"*
 
@@ -22,7 +27,7 @@ When published, it will be available in Obsidian's Community Plugin Browser via:
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the digital economy. For my PhD project, I investigate the governance of the app economy and how software ecosystems manage the tension between innovation and compatibility. If you are interested in this subject, feel free to get in touch!
 
-### Profiles
+__Profiles__  
 - [Academic Website](https://chris-grieser.de/)
 - [ResearchGate](https://www.researchgate.net/profile/Christopher-Grieser)
 - [Discord](https://discordapp.com/users/462774483044794368/)
@@ -30,5 +35,5 @@ In my day job, I am a sociologist studying the social mechanisms underlying the 
 - [Twitter](https://twitter.com/pseudo_meta)
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
 
-### Buy Me a Coffee
+__Buy Me a Coffee__  
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
