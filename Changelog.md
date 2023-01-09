@@ -1,0 +1,9 @@
+- 2023-01-09	release 0.1.1
+- 2023-01-09	chore
+- 2023-01-09	feat: starredNotesCycler command
+- 2023-01-09	feat: alternate note
+- 2023-01-09	build: ran bootstrap script
+- 2023-01-09	fix: bootstrap
+- 2023-01-09	chore
+- 2023-01-09	Update .editorconfig
+- 2023-01-09	Initial commit
