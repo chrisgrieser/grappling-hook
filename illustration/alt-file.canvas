@@ -1,0 +1,20 @@
+{
+	"nodes":[
+		{"id":"2a2115444a588e9f","x":-880,"y":-140,"width":160,"height":50,"color":"1","type":"text","text":"current \nnote"},
+		{"id":"66ea98f8f0fd3125","x":-880,"y":130,"width":160,"height":50,"color":"3","type":"text","text":"previous note"},
+		{"id":"76162d5c3b416c4c","x":-880,"y":-5,"width":160,"height":50,"color":"3","type":"text","text":"previous note"},
+		{"id":"c04590d9278f13c4","x":-980,"y":-160,"width":380,"height":360,"type":"group","label":"Obsidian Navigation Commands"},
+		{"id":"913905d2b6cfb944","x":-420,"y":-140,"width":160,"height":50,"color":"1","type":"text","text":"current \nnote"},
+		{"id":"c8e93bbc395e1ff1","x":-420,"y":130,"width":160,"height":50,"color":"3","type":"text","text":"previous note"},
+		{"id":"0825dc01fae0d44e","x":-420,"y":-5,"width":160,"height":50,"color":"3","type":"text","text":"previous note"},
+		{"id":"4b6192584dcf595c","x":-540,"y":-160,"width":400,"height":360,"type":"group","label":"Grappling Hook's Alternate File"}
+	],
+	"edges":[
+		{"id":"48379d57d0a7772c","fromNode":"913905d2b6cfb944","fromSide":"left","toNode":"0825dc01fae0d44e","toSide":"left","color":"4","label":"alternate\nfile"},
+		{"id":"c3dc23c2c48a6963","fromNode":"0825dc01fae0d44e","fromSide":"right","toNode":"913905d2b6cfb944","toSide":"right","color":"4","label":"alternate\nfile"},
+		{"id":"fb955d216d6340f6","fromNode":"76162d5c3b416c4c","fromSide":"right","toNode":"2a2115444a588e9f","toSide":"right","color":"5","label":"forward"},
+		{"id":"1e5d7f976f3f2cde","fromNode":"66ea98f8f0fd3125","fromSide":"right","toNode":"76162d5c3b416c4c","toSide":"right","color":"5","label":"forward"},
+		{"id":"9ba209f7a75e8a3a","fromNode":"2a2115444a588e9f","fromSide":"left","toNode":"76162d5c3b416c4c","toSide":"left","color":"6","label":"back"},
+		{"id":"6b890d527019f4aa","fromNode":"76162d5c3b416c4c","fromSide":"left","toNode":"66ea98f8f0fd3125","toSide":"left","color":"6","label":"back"}
+	]
+}

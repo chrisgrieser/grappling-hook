@@ -1,0 +1,21 @@
+{
+	"nodes":[
+		{"id":"4b6192584dcf595c","x":-900,"y":-180,"width":940,"height":560,"type":"group","label":"Grappling Hook's Star Cycler"},
+		{"id":"0825dc01fae0d44e","x":-700,"y":-23,"width":200,"height":65,"color":"2","type":"text","text":"starred note  \n(modified today)"},
+		{"id":"50ca1ae33b7e8281","x":-700,"y":129,"width":200,"height":65,"color":"3","type":"text","text":"starred note  \n(mod. yesterday)"},
+		{"id":"923c37856e280677","x":-700,"y":280,"width":200,"height":65,"color":"3","type":"text","text":"starred note  \n(mod. last week)"},
+		{"id":"913905d2b6cfb944","x":-700,"y":-160,"width":200,"height":50,"color":"1","type":"text","text":"current \nnote"},
+		{"id":"852be4a2a9c37015","x":-320,"y":-130,"width":320,"height":187,"type":"group","label":"same hotkey"},
+		{"id":"4c4f140cd72a2c96","x":-260,"y":-110,"width":200,"height":60,"color":"5","type":"text","text":"with selection"},
+		{"id":"d32abef198a75758","x":-260,"y":-23,"width":200,"height":60,"color":"4","type":"text","text":"with no selection"}
+	],
+	"edges":[
+		{"id":"67b07314825e87cf","fromNode":"923c37856e280677","fromSide":"right","toNode":"0825dc01fae0d44e","toSide":"right","color":"4","label":"star cycle"},
+		{"id":"ea214818e6b54ac4","fromNode":"0825dc01fae0d44e","fromSide":"bottom","toNode":"50ca1ae33b7e8281","toSide":"top","color":"4","label":"star cycle"},
+		{"id":"cabf8967be4471ad","fromNode":"913905d2b6cfb944","fromSide":"bottom","toNode":"0825dc01fae0d44e","toSide":"top","color":"4","label":"star cycle"},
+		{"id":"f9185803444e2117","fromNode":"50ca1ae33b7e8281","fromSide":"bottom","toNode":"923c37856e280677","toSide":"top","color":"4","label":"star cycle"},
+		{"id":"117b838704ab5ad1","fromNode":"913905d2b6cfb944","fromSide":"left","toNode":"0825dc01fae0d44e","toSide":"left","color":"5","label":"send text"},
+		{"id":"39dad4fb2eeba3b7","fromNode":"50ca1ae33b7e8281","fromSide":"left","toNode":"0825dc01fae0d44e","toSide":"left","color":"5","label":"send text"},
+		{"id":"ce547b3b3cfb6885","fromNode":"923c37856e280677","fromSide":"left","toNode":"0825dc01fae0d44e","toSide":"left","color":"5","label":"send text"}
+	]
+}

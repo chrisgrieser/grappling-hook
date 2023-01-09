@@ -14,9 +14,21 @@ Obsidian Plugin for blazingly fast file switching. For people for whom using the
 <!--toc:end-->
 
 ## Features
-1. __Star Cycler A__: Goes to your most recently modified starred note. If you are already at a starred note, goes to the next starred note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. (This command is essentially a simplified implementation of the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).)
-2. __Star Cycler B__: When you have text selected, the star cycler switcher switches to its alternative mode, and sends the selected text to the last modified starred note. 
-3. __Alternate File__: Go to the last file you were at. As opposed to the `Navigate Back` command, using the `Alternate File` command moves you forward in history when you press it the second time. This allows you to rapidly switch between two files with only one hotkey. The alternate file is also displayed in the status bar. (This command is essentially an implementation of vim's `:buffer #`.)
+### Star Cycler
+Goes to your most recently modified starred note. If you are already at a starred note, goes to the next starred note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. 
+
+When you have text selected, the star cycler switcher switches to its alternative mode, and sends the selected text to the last modified starred note, regardless on which note you are.
+
+![illustration star cycler](./illustration/star-cycler.png)
+
+*This command is essentially a simplified implementation of the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
+
+### Alternate File
+Go to the last file you were at. As opposed to the `Navigate Back` command, using the `Alternate File` command moves you forward in history when you press it the second time. This allows you to rapidly switch between two files with only one hotkey. The alternate file is also displayed in the status bar.
+
+![illustration alt-file](./illustration/alt-file.png)
+
+*This command is essentially an implementation of vim's `:buffer #`.*
 
 ## Installation
 For now, the plugin is still in beta. It can be installed with the [BRAT Plugin](https://github.com/TfTHacker/obsidian42-brat).,
@@ -36,4 +48,5 @@ __Profiles__
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
 
 __Buy Me a Coffee__  
+<br>
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
