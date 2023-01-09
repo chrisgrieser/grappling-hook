@@ -3,9 +3,9 @@ https://github.com/obsidianmd/obsidian-releases/blob/master/community-plugins.js
 
     },
     {
-        "id": "{{plugin-id}}",
-        "name": "{{plugin-name}}",
+        "id": "grappling-hook",
+        "name": "🪝 Grappling Hook",
         "author": "pseudometa",
-        "description": "{{plugin-desc}}",
-        "repo": "chrisgrieser/{{plugin-id}}"
+        "description": "Obsidian Plugin for blazingly fast file switching. For people for whom using the Quick Switcher still takes too much time.",
+        "repo": "chrisgrieser/grappling-hook"
     }

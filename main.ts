@@ -1,11 +1,11 @@
 import { Plugin } from "obsidian";
 
-export default class {{plugin-class}} extends Plugin {
+export default class grapplingHook extends Plugin {
 
 	async onload() {
-		console.log("{{plugin-name}} Plugin loaded.");
+		console.log("🪝 Grappling Hook Plugin loaded.");
 	}
 
-	async onunload() { console.log("{{plugin-name}} Plugin unloaded.") }
+	async onunload() { console.log("🪝 Grappling Hook Plugin unloaded.") }
 
 }
