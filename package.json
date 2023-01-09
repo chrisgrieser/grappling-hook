@@ -1,6 +1,6 @@
 {
 	"name": "🪝 Grappling Hook",
-	"version": "0.1.1.2",
+	"version": "0.1.1.3",
 	"description": "Obsidian Plugin for blazingly fast file switching. For people for whom using the Quick Switcher still takes too much time.",
 	"main": "main.js",
 	"scripts": {
