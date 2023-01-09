@@ -31,7 +31,7 @@ Go to the last file you were at. As opposed to the `Navigate Back` command, usin
 *This command is essentially an implementation of vim's `:buffer #`.*
 
 ## Installation
-For now, the plugin is still in beta. It can be installed with the [BRAT Plugin](https://github.com/TfTHacker/obsidian42-brat).,
+For now, the plugin is still in beta. It can be installed with the [BRAT Plugin](https://github.com/TfTHacker/obsidian42-brat).
 
 When published, it will be available in Obsidian's Community Plugin Browser via: `Settings` → `Community Plugins` → `Browse` → Search for *"🪝 Grappling Hook"*
 
