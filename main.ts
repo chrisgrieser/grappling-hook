@@ -29,12 +29,25 @@ declare module "obsidian" {
 /* eslint-enable no-unused-vars */
 
 export default class grapplingHookPlugin extends Plugin {
+	statusbar: HTMLElement;
+
 	async onload() {
 		console.info("🪝 Grappling Hook Plugin loaded.");
+
+		this.statusbar = this.addStatusBarItem();
+		this.statusbar.setText("aaaa");
+		this.registerEvent(
+			// second arg needs to be arrow-function, so that `this` gets set
+			// correctly. https://discord.com/channels/686053708261228577/840286264964022302/1016341061641183282
+			this.app.workspace.on("file-open", () => {
+				this.displayAlternateNote();
+			}),
+		);
+
 		this.addCommand({
 			id: "alternate-note",
 			name: "Switch to Alternate Note",
-			callback: () => this.alternateNote(),
+			callback: () => this.openAlternateNote(),
 		});
 		this.addCommand({
 			id: "cycle-starred-notes",
@@ -50,7 +63,7 @@ export default class grapplingHookPlugin extends Plugin {
 	//───────────────────────────────────────────────────────────────────────────
 	// Helpers
 
-	activeLeaf () {
+	activeLeaf() {
 		return this.app.workspace.getLeaf();
 	}
 	pathToTFile(filepath: string) {
@@ -84,8 +97,41 @@ export default class grapplingHookPlugin extends Plugin {
 		return this.pathToTFile(nextFilePath);
 	}
 
+	// this function emulates vim's `:buffer #`
+	getAlternateNote() {
+		const recentFiles = this.app.workspace.lastOpenFiles;
+		for (const filePath of recentFiles) {
+			const altTFile = this.pathToTFile(filePath);
+			// checks file existence, e.g. for deleted files
+			if (altTFile) return altTFile;
+		}
+	}
+
 	//───────────────────────────────────────────────────────────────────────────
 
+	openAlternateNote() {
+		const altTFile = this.getAlternateNote();
+		if (!altTFile) {
+			new Notice("No valid recent note exists.");
+			return;
+		}
+		this.activeLeaf().openFile(altTFile);
+	}
+
+	// Status Bar
+	displayAlternateNote() {
+		console.log("beep");
+		const altTFile = this.getAlternateNote();
+		console.log("beep2");
+		if (!altTFile) {
+			this.statusbar.setText("");
+			return;
+		}
+		const statusbarText = altTFile ? altTFile.basename : "aaa";
+		this.statusbar.setText(statusbarText);
+	}
+
+	// Commands
 	async starredNotesCycler(editor: Editor) {
 		if (!this.app.internalPlugins.config.starred) {
 			new Notice("Starred Core Plugin not enabled.");
@@ -122,18 +168,5 @@ export default class grapplingHookPlugin extends Plugin {
 			await this.app.vault.append(firstStarTFile, selection + "\n");
 			new Notice(`Appended to "${firstStarTFile.name}":\n\n"${selection}"`);
 		}
-	}
-
-	// this function emulates vim's `:buffer #`
-	alternateNote() {
-		const recentFiles = this.app.workspace.lastOpenFiles;
-		for (const filePath of recentFiles) {
-			const altTFile = this.pathToTFile(filePath);
-			if (altTFile) { // checks file existence, e.g. for deleted files
-				this.activeLeaf().openFile(altTFile);
-				return;
-			}
-		}
-		new Notice("No valid recent note exists.");
 	}
 }
