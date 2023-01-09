@@ -1,13 +1,13 @@
 import { Editor, Notice, Plugin, TFile } from "obsidian";
 
 // add type safety for the undocumented methods
-/* eslint-disable no-unused-vars */
 interface starredItem {
 	type: string; // whether starred file or starred search
 	title: string; // filename
 	path: string;
 }
 declare module "obsidian" {
+	/* eslint-disable no-unused-vars */
 	interface Workspace {
 		lastOpenFiles: string[]; // list of 10 most recent files
 	}
