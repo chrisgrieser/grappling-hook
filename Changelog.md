@@ -1,3 +1,5 @@
+- 2023-01-09	release 0.2.1
+- 2023-01-09	chore
 - 2023-01-09	release 0.2.0
 - 2023-01-09	chore
 - 2023-01-09	feat: statusbar displaying alternate file
