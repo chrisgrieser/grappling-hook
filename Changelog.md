@@ -1,3 +1,13 @@
+- 2023-01-10	release 0.2.2
+- 2023-01-10	feat(starCycler): supports reading mode
+- 2023-01-10	chore: add funding URL
+- 2023-01-10	chore: clean debugging-stuff
+- 2023-01-09	chore
+- 2023-01-09	chore
+- 2023-01-09	chore
+- 2023-01-09	chore
+- 2023-01-09	chore: finish up for publication
+- 2023-01-09	docs: write minimal readme
 - 2023-01-09	release 0.2.1
 - 2023-01-09	chore
 - 2023-01-09	release 0.2.0
