@@ -149,8 +149,16 @@ export default class grapplingHookPlugin extends Plugin {
 		// INFO in reading mode, getSelection() returns whatever is selected in
 		// edit mode, it seems best to check for the view not being reading mode,
 		// otherwise this can unexpectedtly send the wrong selection
-		const editor = view && view.getState().mode !== "preview" ? view.editor : false;
-		const selection = editor ? editor.getSelection() : "";
+		const editor = view ? view.editor : false;
+		const mode = editor ? view.getState().mode : "";
+		let selection = "";
+		if (mode === "preview") {
+			// INFO base JS method instead of Obsidian API, only retrieves plain
+			// text without markup though
+			selection = activeWindow.getSelection().toString(); 
+		} else if (mode === "source" && editor) {
+			selection = editor.getSelection();
+		}
 
 		// cycle through starred files
 		if (selection === "") {
