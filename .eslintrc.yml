@@ -22,17 +22,22 @@ rules:
   "@typescript-eslint/no-extra-semi": warn
   "@typescript-eslint/no-empty-function": warn
 
-  # duplication with LSP
+  # off due to duplication
   "@typescript-eslint/no-unused-vars": off
   no-unused-vars: off 
+  no-empty-function: off
 
-  require-await: off # TODO errors for `async onload`, still have to figure out how to fix
+  # TODO errors for `async onload`, still have to figure out how to fix
+  require-await: off
 
   #──────────────────────────────────────────────────────────────────────────────
 
   # code structure
   complexity: [error, 13]
   max-depth: [error, 4]
+
+  # blocks
+  no-empty: warn
 
   # variables
   no-shadow:
@@ -88,7 +93,6 @@ rules:
   require-atomic-updates: error
 
   # Functions
-  no-empty-function: warn
   array-callback-return:
     - error
     - checkForEach: false

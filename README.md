@@ -18,7 +18,7 @@ Obsidian Plugin for blazingly fast file switching. For people for whom using the
 ### Star Cycler
 Goes to your most recently modified starred note. If you are already at a starred note, goes to the next starred note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. 
 
-When you have text selected (and are not in Reading Mode), the star cycler switches to its alternative mode, and sends the selected text to the last modified starred note regardless on which note you are.
+When you have text selected, the star cycler switches to its alternative mode, and sends the selected text to the last modified starred note regardless on which note you are.
 
 ![illustration star cycler](./illustration/star-cycler.png)
 

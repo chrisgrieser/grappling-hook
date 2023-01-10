@@ -1,0 +1,9 @@
+.status-bar-item.plugin-grappling-hook::before {
+	content: "↪"; /* right arrow with HOOK */
+	margin-right: 6px;
+}
+
+/* do not leave some gap for themes adding padding to statusbar items */
+.status-bar-item.plugin-grappling-hook:empty {
+	display: none;
+}
