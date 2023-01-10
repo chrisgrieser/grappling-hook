@@ -120,14 +120,12 @@ export default class grapplingHookPlugin extends Plugin {
 
 	// Status Bar
 	displayAlternateNote() {
-		console.log("beep");
 		const altTFile = this.getAlternateNote();
-		console.log("beep2");
 		if (!altTFile) {
 			this.statusbar.setText("");
 			return;
 		}
-		const statusbarText = altTFile ? altTFile.basename : "aaa";
+		const statusbarText = altTFile ? altTFile.basename : "";
 		this.statusbar.setText(statusbarText);
 	}
 
