@@ -1,4 +1,4 @@
-import { Editor, Notice, Plugin, TFile } from "obsidian";
+import { MarkdownView, Notice, Plugin, TFile } from "obsidian";
 
 // add type safety for the undocumented methods
 interface starredItem {
@@ -52,7 +52,7 @@ export default class grapplingHookPlugin extends Plugin {
 		this.addCommand({
 			id: "cycle-starred-notes",
 			name: "Cycle Starred Notes / Send Selection to Last Starred Note",
-			editorCallback: editor => this.starredNotesCycler(editor),
+			callback: () => this.starredNotesCycler(),
 		});
 	}
 
@@ -107,8 +107,6 @@ export default class grapplingHookPlugin extends Plugin {
 		}
 	}
 
-	//───────────────────────────────────────────────────────────────────────────
-
 	openAlternateNote() {
 		const altTFile = this.getAlternateNote();
 		if (!altTFile) {
@@ -117,6 +115,8 @@ export default class grapplingHookPlugin extends Plugin {
 		}
 		this.activeLeaf().openFile(altTFile);
 	}
+
+	//───────────────────────────────────────────────────────────────────────────
 
 	// Status Bar
 	displayAlternateNote() {
@@ -129,21 +129,28 @@ export default class grapplingHookPlugin extends Plugin {
 		this.statusbar.setText(statusbarText);
 	}
 
+	//───────────────────────────────────────────────────────────────────────────
+
 	// Commands
-	// TODO figure out how to get the editor without editorCallback, so it also
-	// works in Reading Mode
-	async starredNotesCycler(editor: Editor) {
+	async starredNotesCycler() {
 		if (!this.app.internalPlugins.config.starred) {
 			new Notice("Starred Core Plugin not enabled.");
 			return;
 		}
-
-		const selection = editor.getSelection();
 		const starredFiles = this.getStarredFiles();
 		if (starredFiles.length === 0) {
 			new Notice("There are no starred files.");
 			return;
 		}
+
+		// getActiveViewOfType will return null if the active view is null, or is not of type MarkdownView
+		const view = app.workspace.getActiveViewOfType(MarkdownView);
+
+		// INFO in reading mode, getSelection() returns whatever is selected in
+		// edit mode, it seems best to check for the view not being reading mode,
+		// otherwise this can unexpectedtly send the wrong selection
+		const editor = view && view.getState().mode !== "preview" ? view.editor : false;
+		const selection = editor ? editor.getSelection() : "";
 
 		// cycle through starred files
 		if (selection === "") {
@@ -159,7 +166,7 @@ export default class grapplingHookPlugin extends Plugin {
 
 		// append to last modified starred file
 		else {
-			const numberOfCursors = editor.listSelections().length;
+			const numberOfCursors = editor ? editor.listSelections().length : 0;
 			if (numberOfCursors > 1) {
 				new Notice("Multiple Selections are not supported.");
 				return;

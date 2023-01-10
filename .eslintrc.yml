@@ -15,15 +15,20 @@ parserOptions:
 rules:
 
   # TypeScript specific
-  "@typescript-eslint/no-unused-vars": off
   "@typescript-eslint/ban-ts-comment": 
     - warn
     - ts-ignore: allow-with-description
       ts-expect-error: allow-with-description
   "@typescript-eslint/no-extra-semi": warn
   "@typescript-eslint/no-empty-function": warn
-  no-unused-vars: warn
-  require-await: off # errors for `async onload`, still have to figure out how to fix
+
+  # duplication with LSP
+  "@typescript-eslint/no-unused-vars": off
+  no-unused-vars: off 
+
+  require-await: off # TODO errors for `async onload`, still have to figure out how to fix
+
+  #──────────────────────────────────────────────────────────────────────────────
 
   # code structure
   complexity: [error, 13]
