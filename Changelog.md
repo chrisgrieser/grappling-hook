@@ -1,3 +1,6 @@
+- 2023-01-10	release 0.2.3
+- 2023-01-10	feat: add theme-dev-friendly icon to status bar
+- 2023-01-10	feat: also detect selections in reading mode (thanks @Fevol)
 - 2023-01-10	release 0.2.2
 - 2023-01-10	feat(starCycler): supports reading mode
 - 2023-01-10	chore: add funding URL
