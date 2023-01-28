@@ -32,7 +32,7 @@ export default class grapplingHookPlugin extends Plugin {
 	statusbar: HTMLElement;
 
 	async onload() {
-		console.info("🪝 Grappling Hook Plugin loaded.");
+		console.info(this.manifest.name + " Plugin loaded.");
 
 		this.statusbar = this.addStatusBarItem();
 		this.displayAlternateNote();
@@ -57,7 +57,7 @@ export default class grapplingHookPlugin extends Plugin {
 	}
 
 	async onunload() {
-		console.info("🪝 Grappling Hook Plugin unloaded.");
+		console.info(this.manifest.name + " Plugin unloaded.");
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
