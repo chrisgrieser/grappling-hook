@@ -25,8 +25,8 @@ declare module "obsidian" {
 			};
 		};
 	}
+	/* eslint-enable no-unused-vars */
 }
-/* eslint-enable no-unused-vars */
 
 export default class grapplingHookPlugin extends Plugin {
 	statusbar: HTMLElement;
