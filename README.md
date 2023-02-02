@@ -22,7 +22,7 @@ When you have text selected, the star cycler switches to its alternative mode, a
 
 ![illustration star cycler](./illustration/star-cycler.png)
 
-This command is most useful when you work with a core set of main notes, and many smaller auxiliary notes.
+This command is most useful when you work with a core set of main notes, and many auxiliary notes.
 
 *This command is inspired by the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
 
