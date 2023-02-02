@@ -22,7 +22,9 @@ When you have text selected, the star cycler switches to its alternative mode, a
 
 ![illustration star cycler](./illustration/star-cycler.png)
 
-*This command is essentially a simplified implementation of the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
+This command is most useful when you work with a core set of main notes, and many smaller auxiliary notes.
+
+*This command is inspired by the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
 
 ### Alternate File
 Go to the last file you were at. As opposed to the `Navigate Back` command, using the `Alternate File` command moves you forward in history when you press it the second time. This allows you to rapidly switch between two files with only one hotkey. The alternate file is also displayed in the status bar.
