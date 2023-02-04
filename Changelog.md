@@ -1,3 +1,9 @@
+- 2023-02-04	release 0.2.4
+- 2023-02-04	fix: app.workspace.getLastOpenFiles() (@joethei)
+- 2023-02-02	chore
+- 2023-02-02	chore
+- 2023-01-29	chore
+- 2023-01-29	chore
 - 2023-01-10	release 0.2.3
 - 2023-01-10	feat: add theme-dev-friendly icon to status bar
 - 2023-01-10	feat: also detect selections in reading mode (thanks @Fevol)
