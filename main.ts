@@ -8,9 +8,6 @@ interface starredItem {
 }
 declare module "obsidian" {
 	/* eslint-disable no-unused-vars */
-	interface Workspace {
-		lastOpenFiles: string[]; // list of 10 most recent files
-	}
 	interface App {
 		internalPlugins: {
 			config: {
@@ -99,11 +96,10 @@ export default class grapplingHookPlugin extends Plugin {
 
 	// this function emulates vim's `:buffer #`
 	getAlternateNote() {
-		const recentFiles = this.app.workspace.lastOpenFiles;
+		const recentFiles = this.app.workspace.getLastOpenFiles();
 		for (const filePath of recentFiles) {
 			const altTFile = this.pathToTFile(filePath);
-			// checks file existence, e.g. for deleted files
-			if (altTFile) return altTFile;
+			if (altTFile) return altTFile; // checks file existence, e.g. for deleted files
 		}
 	}
 
