@@ -25,7 +25,7 @@ declare module "obsidian" {
 	/* eslint-enable no-unused-vars */
 }
 
-export default class grapplingHookPlugin extends Plugin {
+export default class GrapplingHookPlugin extends Plugin {
 	statusbar: HTMLElement;
 
 	async onload() {
@@ -60,12 +60,14 @@ export default class grapplingHookPlugin extends Plugin {
 	//───────────────────────────────────────────────────────────────────────────
 	// Helpers
 
-	activeLeaf() {
+	getLeaf() {
 		return this.app.workspace.getLeaf();
 	}
+
 	pathToTFile(filepath: string) {
 		const file = this.app.vault.getAbstractFileByPath(filepath);
 		if (file instanceof TFile) return file;
+		return null;
 	}
 
 	getStarredFiles() {
@@ -88,8 +90,7 @@ export default class grapplingHookPlugin extends Plugin {
 		// returns -1 if current file is not starred
 		const currentIndex = filePathArray.findIndex((path: string) => path === currentFilePath);
 
-		let nextIndex = currentIndex + 1;
-		if (nextIndex > filePathArray.length - 1) nextIndex = 0;
+		const nextIndex = (currentIndex + 1) % filePathArray.length;
 		const nextFilePath = filePathArray[nextIndex];
 		return this.pathToTFile(nextFilePath);
 	}
@@ -101,6 +102,7 @@ export default class grapplingHookPlugin extends Plugin {
 			const altTFile = this.pathToTFile(filePath);
 			if (altTFile) return altTFile; // checks file existence, e.g. for deleted files
 		}
+		return null;
 	}
 
 	openAlternateNote() {
@@ -109,7 +111,7 @@ export default class grapplingHookPlugin extends Plugin {
 			new Notice("No valid recent note exists.");
 			return;
 		}
-		this.activeLeaf().openFile(altTFile);
+		this.getLeaf().openFile(altTFile);
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
@@ -117,10 +119,6 @@ export default class grapplingHookPlugin extends Plugin {
 	// Status Bar
 	displayAlternateNote() {
 		const altTFile = this.getAlternateNote();
-		if (!altTFile) {
-			this.statusbar.setText("");
-			return;
-		}
 		const statusbarText = altTFile ? altTFile.basename : "";
 		this.statusbar.setText(statusbarText);
 	}
@@ -142,30 +140,27 @@ export default class grapplingHookPlugin extends Plugin {
 		// getActiveViewOfType will return null if the active view is null, or is not of type MarkdownView
 		const view = app.workspace.getActiveViewOfType(MarkdownView);
 
-		// INFO in reading mode, getSelection() returns whatever is selected in
-		// edit mode, it seems best to check for the view not being reading mode,
-		// otherwise this can unexpectedtly send the wrong selection
-		const editor = view ? view.editor : false;
-		const mode = editor ? view.getState().mode : "";
+		const editor = view ? view.editor : null;
+		const mode = editor ? view.getState().mode : null;
 		let selection = "";
 		if (mode === "preview") {
-			// INFO base JS method instead of Obsidian API, only retrieves plain
-			// text without markup though
-			selection = activeWindow.getSelection().toString(); 
-		} else if (mode === "source" && editor) {
+			// INFO base JS method instead of Obsidian API (only retrieves plain
+			// text without markup though)
+			selection = activeWindow.getSelection().toString();
+		} else if (editor && mode === "source") {
 			selection = editor.getSelection();
 		}
 
 		// cycle through starred files
 		if (selection === "") {
-			const activeLeaf = this.activeLeaf();
+			const leaf = this.getLeaf();
 			const currentFilePath = this.app.workspace.getActiveFile().path;
 			const nextFile = this.getNextTFile(starredFiles, currentFilePath);
 			if (nextFile.path === currentFilePath) {
 				new Notice("Already at the sole starred file.");
 				return;
 			}
-			activeLeaf.openFile(nextFile);
+			leaf.openFile(nextFile);
 		}
 
 		// append to last modified starred file
