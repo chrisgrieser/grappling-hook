@@ -18,11 +18,11 @@ Obsidian Plugin for blazingly fast file switching. For people for whom using the
 ### Star Cycler
 Goes to your most recently modified starred note. If you are already at a starred note, goes to the next starred note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. 
 
-When you have text selected, the star cycler switches to its alternative mode, and sends the selected text to the last modified starred note regardless on which note you are.
+When you have text selected, the star cycler switches to its alternative mode, and copies the selected text to the last modified starred note regardless on which note you are.
 
 ![illustration star cycler](./illustration/star-cycler.png)
 
-This command is most useful when you work with a core set of main notes, and many auxiliary notes.
+This command is intended for when you work with a core set of main notes and many auxiliary notes.
 
 *This command is inspired by the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
 
