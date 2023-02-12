@@ -1,3 +1,7 @@
+- 2023-02-12	release 0.2.5
+- 2023-02-12	fix: issues raised by @liamcain
+- 2023-02-12	chore
+- 2023-02-12	fix #2
 - 2023-02-04	release 0.2.4
 - 2023-02-04	fix: app.workspace.getLastOpenFiles() (@joethei)
 - 2023-02-02	chore
