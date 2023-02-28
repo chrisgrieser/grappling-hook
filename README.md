@@ -37,7 +37,7 @@ Go to the last file you were at. As opposed to the `Navigate Back` command, usin
 
 ### Status Bar Items
 *Grappling Hook* adds two status bar items: 
-1. An Icon indicating whether the current file is starred or not.
+1. An icon indicating whether the current file is starred or not. If it is the last modified starred file, the icon gets an extra `!`suffix.
 2. The name of the alternate file that the `Switch to Alternate Note` command
 will switch to.
 

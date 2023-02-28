@@ -131,8 +131,13 @@ export default class GrapplingHookPlugin extends Plugin {
 		const currentLeaf = this.getLeaf();
 		const currentTfile = currentLeaf.view instanceof MarkdownView ? currentLeaf.view.file : null;
 		const isStarred = this.getStarredFiles().includes(currentTfile.path);
+		const isLastModifiedStarred = this.getStarredFiles()[0] === currentTfile.path;
 
-		const statusbarText = isStarred ? " " : ""; // space triggers css selector `:not(:empty)`
+		let statusbarText = ""; // not triggering `:not(:empty)` = no icon
+		if (isLastModifiedStarred) statusbarText = "!"; // triggers `:not(:empty)` = icon
+		else if (isStarred) statusbarText = " "; // triggers `:not(:empty)` = icon as well
+
+
 		this.statusbarStarred.setText(statusbarText);
 	}
 
