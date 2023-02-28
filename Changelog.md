@@ -1,3 +1,5 @@
+- 2023-02-28	release 0.3.1
+- 2023-02-28	feat: last modified starred note gets `!` (icon)
 - 2023-02-28	release 0.3.0
 - 2023-02-28	feat: Statusbar item indicating starred status
 - 2023-02-12	release 0.2.5

@@ -135,8 +135,7 @@ export default class GrapplingHookPlugin extends Plugin {
 
 		let statusbarText = ""; // not triggering `:not(:empty)` = no icon
 		if (isLastModifiedStarred) statusbarText = "!"; // triggers `:not(:empty)` = icon
-		else if (isStarred) statusbarText = " "; // triggers `:not(:empty)` = icon as well
-
+		else if (isStarred) statusbarText = " "; // triggers `:not(:empty)` = icon
 
 		this.statusbarStarred.setText(statusbarText);
 	}
