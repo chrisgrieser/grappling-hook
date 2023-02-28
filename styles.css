@@ -1,6 +1,13 @@
+
+/* alt file indicator */
 .status-bar-item.plugin-grappling-hook::before {
-	content: "↪"; /* right arrow with HOOK */
+	content: "↪";
 	margin-right: 6px;
+}
+
+/* starred status of current file indicator */
+.status-bar-item.plugin-grappling-hook + .plugin-grappling-hook:not(:empty)::before {
+	content: "★";
 }
 
 /* do not leave some gap for themes adding padding to statusbar items */

@@ -7,8 +7,10 @@ Obsidian Plugin for blazingly fast file switching. For people for whom using the
 ## Table of Contents
 
 <!--toc:start-->
-- [Table of Contents](#table-of-contents)
 - [Features](#features)
+	- [Star Cycler](#star-cycler)
+	- [Alternate Note](#alternate-note)
+	- [Status Bar Items](#status-bar-items)
 - [Installation](#installation)
 - [About the developer](#about-the-developer)
 <!--toc:end-->
@@ -26,17 +28,23 @@ This command is intended for when you work with a core set of main notes and man
 
 *This command is inspired by the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
 
-### Alternate File
-Go to the last file you were at. As opposed to the `Navigate Back` command, using the `Alternate File` command moves you forward in history when you press it the second time. This allows you to rapidly switch between two files with only one hotkey. The alternate file is also displayed in the status bar.
+### Alternate Note
+Go to the last file you were at. As opposed to the `Navigate Back` command, using the `Switch to Alternate Note` command moves you forward in history when you press it the second time. This allows you to rapidly switch between two files with only one hotkey. The alternate file is also displayed in the status bar.
 
 ![illustration alt-file](./illustration/alt-file.png)
 
 *This command is essentially an implementation of vim's `:buffer #`.*
 
-## Installation
-For now, the plugin is still in beta. It can be installed with the [BRAT Plugin](https://github.com/TfTHacker/obsidian42-brat).
+### Status Bar Items
+*Grappling Hook* adds two status bar items: 
+1. An Icon indicating whether the current file is starred or not.
+2. The name of the alternate file that the `Switch to Alternate Note` command
+will switch to.
 
-When published, it will be available in Obsidian's Community Plugin Browser via: `Settings` → `Community Plugins` → `Browse` → Search for *"🪝 Grappling Hook"*
+*Advanced Users:* the status bar items have been designed in a way that they can be customized with a [CSS snippet](https://help.obsidian.md/Extending+Obsidian/CSS+snippets). You can find the selectors in the plugin's [`styles.css` file](./styles.css).
+
+## Installation
+The plugin is available in Obsidian's Community Plugin Browser via: `Settings` → `Community Plugins` → `Browse` → Search for *"🪝 Grappling Hook"*
 
 <!-- vale Google.FirstPerson = NO --> <!-- vale Microsoft.FirstPerson = NO -->
 ## About the developer

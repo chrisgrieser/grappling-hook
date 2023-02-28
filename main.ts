@@ -26,17 +26,21 @@ declare module "obsidian" {
 }
 
 export default class GrapplingHookPlugin extends Plugin {
-	statusbar: HTMLElement;
+	statusbarAltFile: HTMLElement;
+	statusbarStarred: HTMLElement;
 
 	async onload() {
 		console.info(this.manifest.name + " Plugin loaded.");
 
-		this.statusbar = this.addStatusBarItem();
+		this.statusbarAltFile = this.addStatusBarItem(); // has to be set 1st for styles.css to work correctly
+		this.statusbarStarred = this.addStatusBarItem(); // has to be set 2nd
 		this.displayAlternateNote();
+		this.displayStarredStatus();
 		this.registerEvent(
 			// second arg needs to be arrow-function, so that `this` gets set
 			// correctly. https://discord.com/channels/686053708261228577/840286264964022302/1016341061641183282
 			this.app.workspace.on("file-open", () => {
+				this.displayStarredStatus();
 				this.displayAlternateNote();
 			}),
 		);
@@ -120,12 +124,21 @@ export default class GrapplingHookPlugin extends Plugin {
 	displayAlternateNote() {
 		const altTFile = this.getAlternateNote();
 		const statusbarText = altTFile ? altTFile.basename : "";
-		this.statusbar.setText(statusbarText);
+		this.statusbarAltFile.setText(statusbarText);
+	}
+
+	displayStarredStatus() {
+		const currentLeaf = this.getLeaf();
+		const currentTfile = currentLeaf.view instanceof MarkdownView ? currentLeaf.view.file : null;
+		const isStarred = this.getStarredFiles().includes(currentTfile.path);
+
+		const statusbarText = isStarred ? " " : ""; // space triggers css selector `:not(:empty)`
+		this.statusbarStarred.setText(statusbarText);
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
 
-	// Commands
+	// COMMANDS
 	async starredNotesCycler() {
 		if (!this.app.internalPlugins.config.starred) {
 			new Notice("Starred Core Plugin not enabled.");
@@ -137,7 +150,8 @@ export default class GrapplingHookPlugin extends Plugin {
 			return;
 		}
 
-		// getActiveViewOfType will return null if the active view is null, or is not of type MarkdownView
+		// getActiveViewOfType will return null if the active view is null, or is 
+		// not of type MarkdownView
 		const view = app.workspace.getActiveViewOfType(MarkdownView);
 
 		const editor = view ? view.editor : null;
