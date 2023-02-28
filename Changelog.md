@@ -1,3 +1,5 @@
+- 2023-02-28	release 0.3.0
+- 2023-02-28	feat: Statusbar item indicating starred status
 - 2023-02-12	release 0.2.5
 - 2023-02-12	fix: issues raised by @liamcain
 - 2023-02-12	chore

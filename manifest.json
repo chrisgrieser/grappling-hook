@@ -2,7 +2,7 @@
 	"id": "grappling-hook",
 	"name": "🪝 Grappling Hook",
 	"description": "Obsidian Plugin for blazingly fast file switching. For people for whom using the Quick Switcher still takes too much time.",
-	"version": "0.2.5",
+	"version": "0.3.0",
 	"minAppVersion": "1.0",
 	"isDesktopOnly": false,
 	"author": "pseudometa",
