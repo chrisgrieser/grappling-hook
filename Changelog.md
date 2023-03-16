@@ -1,3 +1,7 @@
+- 2023-03-16	release 0.4.0
+- 2023-03-16	feat: update for bookmarks plugin
+- 2023-03-16	style: update eslintrc
+- 2023-03-16	chore: bump min-app version to 1.2
 - 2023-03-04	release 0.3.2
 - 2023-03-04	chore: adjust positioning for statusbar items
 - 2023-02-28	release 0.3.1
