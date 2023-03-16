@@ -5,12 +5,6 @@
 	margin-right: 2px;
 }
 
-/* starred status of current file indicator */
-.status-bar-item.plugin-grappling-hook + .plugin-grappling-hook:not(:empty)::before {
-	content: "★";
-	margin-right: 0;
-}
-
 /* do not leave some gap for themes adding padding to statusbar items */
 .status-bar-item.plugin-grappling-hook:empty {
 	display: none;

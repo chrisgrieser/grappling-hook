@@ -1,22 +1,25 @@
 import { MarkdownView, Notice, Plugin, TFile } from "obsidian";
 
 // add type safety for the undocumented methods
-interface starredItem {
-	type: string; // whether starred file or starred search
+interface bookmarkItem {
+	type: string;
 	title: string; // filename
-	path: string;
+	path?: string;
+	items: bookmarkItem[]; // if type "group", then can recursively contain itself
 }
 declare module "obsidian" {
 	/* eslint-disable no-unused-vars */
 	interface App {
 		internalPlugins: {
-			config: {
-				starred: boolean; // whether the Starred Core Plugin is enabled
-			};
 			plugins: {
 				starred: {
 					instance: {
-						items: starredItem[];
+						items: bookmarkItem[];
+					};
+				};
+				bookmarks: {
+					instance: {
+						items: bookmarkItem[];
 					};
 				};
 			};
@@ -27,22 +30,18 @@ declare module "obsidian" {
 
 export default class GrapplingHookPlugin extends Plugin {
 	statusbarAltFile: HTMLElement;
-	statusbarStarred: HTMLElement;
 
 	async onload() {
 		console.info(this.manifest.name + " Plugin loaded.");
 
-		this.statusbarAltFile = this.addStatusBarItem(); // has to be set 1st for styles.css to work correctly
-		this.statusbarStarred = this.addStatusBarItem(); // has to be set 2nd
+		this.statusbarAltFile = this.addStatusBarItem();
 		this.displayAlternateNote();
-		this.displayStarredStatus();
 		this.registerEvent(
 			// second arg needs to be arrow-function, so that `this` gets set
 			// correctly. https://discord.com/channels/686053708261228577/840286264964022302/1016341061641183282
 			this.app.workspace.on("file-open", () => {
-				this.displayStarredStatus();
 				this.displayAlternateNote();
-			}),
+			})
 		);
 
 		this.addCommand({
@@ -52,7 +51,7 @@ export default class GrapplingHookPlugin extends Plugin {
 		});
 		this.addCommand({
 			id: "cycle-starred-notes",
-			name: "Cycle Starred Notes / Send Selection to Last Starred Note",
+			name: "Cycle Bookmarked Notes / Send Selection to Last Bookmark",
 			callback: () => this.starredNotesCycler(),
 		});
 	}
@@ -74,26 +73,42 @@ export default class GrapplingHookPlugin extends Plugin {
 		return null;
 	}
 
-	getStarredFiles() {
-		const stars = this.app.internalPlugins.plugins.starred.instance.items
-			.filter((item: starredItem) => {
-				const notStarredSearch = item.type === "file";
+	// recursively flatten the array and collect the paths in the collector array
+	getBookmarkpaths(input: bookmarkItem[], collector: string[]) {
+		input.forEach((item: bookmarkItem) => {
+			if (item.type === "file") {
 				const fileExists = this.pathToTFile(item.path);
-				return notStarredSearch && fileExists;
-			})
-			.map((item: starredItem) => item.path)
-			.sort((a: string, b: string) => {
+				if (fileExists) collector.push(item.path);
+			}
+			if (item.type === "group")
+				this.getBookmarkpaths(item.items, collector);
+		});
+	}
+
+	getStarredFiles() {
+		let starsAndBookmarks: string[] = []; // collects stars and bookmarks
+		const stars = this.app.internalPlugins.plugins.starred?.instance?.items;
+		const bookmarks =
+			this.app.internalPlugins.plugins.bookmarks?.instance?.items;
+		if (bookmarks) this.getBookmarkpaths(bookmarks, starsAndBookmarks);
+		if (stars) this.getBookmarkpaths(stars, starsAndBookmarks);
+
+		// remove duplicates (stars + bookmarks) and sort by last modification
+		starsAndBookmarks = [...new Set(starsAndBookmarks)].sort(
+			(a: string, b: string) => {
 				const aTfile = this.pathToTFile(a);
 				const bTfile = this.pathToTFile(b);
 				return bTfile.stat.mtime - aTfile.stat.mtime;
-			});
-		return stars;
+			}
+		);
+		return starsAndBookmarks;
 	}
 
 	getNextTFile(filePathArray: string[], currentFilePath: string) {
-		// returns -1 if current file is not starred
-		const currentIndex = filePathArray.findIndex((path: string) => path === currentFilePath);
-
+		// .findIndex returns -1 if current file is not starred
+		const currentIndex = filePathArray.findIndex(
+			(path: string) => path === currentFilePath
+		);
 		const nextIndex = (currentIndex + 1) % filePathArray.length;
 		const nextFilePath = filePathArray[nextIndex];
 		return this.pathToTFile(nextFilePath);
@@ -119,42 +134,25 @@ export default class GrapplingHookPlugin extends Plugin {
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
+	// STATUS BAR
 
-	// Status Bar
 	displayAlternateNote() {
 		const altTFile = this.getAlternateNote();
 		const statusbarText = altTFile ? altTFile.basename : "";
 		this.statusbarAltFile.setText(statusbarText);
 	}
 
-	displayStarredStatus() {
-		const currentLeaf = this.getLeaf();
-		const currentTfile = currentLeaf.view instanceof MarkdownView ? currentLeaf.view.file : null;
-		const isStarred = this.getStarredFiles().includes(currentTfile.path);
-		const isLastModifiedStarred = this.getStarredFiles()[0] === currentTfile.path;
-
-		let statusbarText = ""; // not triggering `:not(:empty)` = no icon
-		if (isLastModifiedStarred) statusbarText = "!"; // triggers `:not(:empty)` = icon
-		else if (isStarred) statusbarText = " "; // triggers `:not(:empty)` = icon
-
-		this.statusbarStarred.setText(statusbarText);
-	}
-
 	//───────────────────────────────────────────────────────────────────────────
-
 	// COMMANDS
+
 	async starredNotesCycler() {
-		if (!this.app.internalPlugins.config.starred) {
-			new Notice("Starred Core Plugin not enabled.");
-			return;
-		}
 		const starredFiles = this.getStarredFiles();
 		if (starredFiles.length === 0) {
 			new Notice("There are no starred files.");
 			return;
 		}
 
-		// getActiveViewOfType will return null if the active view is null, or is 
+		// getActiveViewOfType will return null if the active view is null, or is
 		// not of type MarkdownView
 		const view = app.workspace.getActiveViewOfType(MarkdownView);
 
@@ -190,7 +188,9 @@ export default class GrapplingHookPlugin extends Plugin {
 			}
 			const firstStarTFile = this.pathToTFile(starredFiles[0]);
 			await this.app.vault.append(firstStarTFile, selection + "\n");
-			new Notice(`Appended to "${firstStarTFile.basename}":\n\n"${selection}"`);
+			new Notice(
+				`Appended to "${firstStarTFile.basename}":\n\n"${selection}"`
+			);
 		}
 	}
 }
