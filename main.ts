@@ -137,8 +137,10 @@ export default class GrapplingHookPlugin extends Plugin {
 	// STATUS BAR
 
 	displayAlternateNote() {
+		const threshold = 30;
 		const altTFile = this.getAlternateNote();
-		const statusbarText = altTFile ? altTFile.basename : "";
+		let statusbarText = altTFile ? altTFile.basename : "";
+		if (statusbarText.length > threshold) statusbarText = statusbarText.slice(0, threshold) + "…"
 		this.statusbarAltFile.setText(statusbarText);
 	}
 
