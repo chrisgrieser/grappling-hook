@@ -1,3 +1,5 @@
+- 2023-03-19	release 0.4.1
+- 2023-03-19	feat: truncate statusbar item if too long
 - 2023-03-16	release 0.4.0
 - 2023-03-16	feat: update for bookmarks plugin
 - 2023-03-16	style: update eslintrc
