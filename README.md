@@ -18,15 +18,18 @@ Obsidian Plugin for blazingly fast file switching. For people for whom using the
 ## Features
 
 ### Star Cycler
-Goes to your most recently modified starred note. If you are already at a starred note, goes to the next starred note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. 
+Goes to your most recently modified starred/bookmarked note. If you are already at a starred note, goes to the next starred note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. 
 
-When you have text selected, the star cycler switches to its alternative mode, and copies the selected text to the last modified starred note regardless on which note you are.
+When you have text selected, the star cycler switches to its alternative mode, and copies the selected text to the last modified starred/bookmarked note regardless on which note you are.
 
 ![illustration star cycler](./illustration/star-cycler.png)
 
 This command is intended for when you work with a core set of main notes and many auxiliary notes.
 
 *This command is inspired by the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
+
+> __Note__  
+> Obsidian 1.2 introduced the Bookmarks plugin which replaces the Starred plugin in a future update. For now, Grappling Hook simply considers both, starred and bookmarked notes when determining the next note to jump to. 
 
 ### Alternate Note
 Go to the last file you were at. As opposed to the `Navigate Back` command, using the `Switch to Alternate Note` command moves you forward in history when you press it the second time. This allows you to rapidly switch between two files with only one hotkey. The alternate file is also displayed in the status bar.
@@ -36,10 +39,7 @@ Go to the last file you were at. As opposed to the `Navigate Back` command, usin
 *This command is essentially an implementation of vim's `:buffer #`.*
 
 ### Status Bar Items
-*Grappling Hook* adds two status bar items: 
-1. An icon indicating whether the current file is starred or not. If it is the last modified starred file, the icon gets an extra `!`suffix.
-2. The name of the alternate file that the `Switch to Alternate Note` command
-will switch to.
+*Grappling Hook* adds the name of the file that the `Switch to Alternate Note` command will switch to to the status bar.
 
 *Advanced Users:* the status bar items have been designed in a way that they can be customized with a [CSS snippet](https://help.obsidian.md/Extending+Obsidian/CSS+snippets). You can find the selectors in the plugin's [`styles.css` file](./styles.css).
 
