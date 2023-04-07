@@ -39,14 +39,14 @@ Go to the last file you were at. As opposed to the `Navigate Back` command, usin
 *This command is essentially an implementation of vim's `:buffer #`.*
 
 ### Status Bar Items
-*Grappling Hook* adds the name of the file that the `Switch to Alternate Note` command will switch to to the status bar.
+*Grappling Hook* adds the name of the file that the `Switch to Alternate Note` command will switch to the status bar.
 
 *Advanced Users:* the status bar items have been designed in a way that they can be customized with a [CSS snippet](https://help.obsidian.md/Extending+Obsidian/CSS+snippets). You can find the selectors in the plugin's [`styles.css` file](./styles.css).
 
 ## Installation
 The plugin is available in Obsidian's Community Plugin Browser via: `Settings` → `Community Plugins` → `Browse` → Search for *"🪝 Grappling Hook"*
 
-<!-- vale Google.FirstPerson = NO --> <!-- vale Microsoft.FirstPerson = NO -->
+<!-- vale Google.FirstPerson = NO -->
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the digital economy. For my PhD project, I investigate the governance of the app economy and how software ecosystems manage the tension between innovation and compatibility. If you are interested in this subject, feel free to get in touch!
 
