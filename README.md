@@ -8,7 +8,7 @@ Obsidian Plugin for blazingly fast file switching. For people for whom using the
 
 <!--toc:start-->
 - [Features](#features)
-	- [Star Cycler](#star-cycler)
+	- [Bookmark Cycler](#bookmark-cycler)
 	- [Alternate Note](#alternate-note)
 	- [Status Bar Items](#status-bar-items)
 - [Installation](#installation)
@@ -17,24 +17,21 @@ Obsidian Plugin for blazingly fast file switching. For people for whom using the
 
 ## Features
 
-### Star Cycler
-Goes to your most recently modified starred/bookmarked note. If you are already at a starred note, goes to the next starred note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. 
+### Bookmark Cycler
+Goes to your most recently modified bookmarked note. If you are already at a bookmarked note, goes to the next bookmarked note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. 
 
-When you have text selected, the star cycler switches to its alternative mode, and copies the selected text to the last modified starred/bookmarked note regardless on which note you are.
+When you have text selected, the bookmark cycler switches to its alternative mode, and copies the selected text to the last modified bookmarked note, regardless the note you are.
 
-![illustration star cycler](./illustration/star-cycler.png)
+![Illustration star cycler](./illustration/star-cycler.png)
 
 This command is intended for when you work with a core set of main notes and many auxiliary notes.
 
 *This command is inspired by the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
 
-> __Note__  
-> Obsidian 1.2 introduced the Bookmarks plugin which replaces the Starred plugin in a future update. For now, Grappling Hook simply considers both, starred and bookmarked notes when determining the next note to jump to. 
-
 ### Alternate Note
 Go to the last file you were at. As opposed to the `Navigate Back` command, using the `Switch to Alternate Note` command moves you forward in history when you press it the second time. This allows you to rapidly switch between two files with only one hotkey. The alternate file is also displayed in the status bar.
 
-![illustration alt-file](./illustration/alt-file.png)
+![Illustration alt-file](./illustration/alt-file.png)
 
 *This command is essentially an implementation of vim's `:buffer #`.*
 
@@ -48,7 +45,7 @@ The plugin is available in Obsidian's Community Plugin Browser via: `Settings` â
 
 <!-- vale Google.FirstPerson = NO -->
 ## About the developer
-In my day job, I am a sociologist studying the social mechanisms underlying the digital economy. For my PhD project, I investigate the governance of the app economy and how software ecosystems manage the tension between innovation and compatibility. If you are interested in this subject, feel free to get in touch!
+In my day job, I am a sociologist studying the social mechanisms underlying the digital economy. For my PhD project, I investigate the governance of the app economy and how software ecosystems manage the tension between innovation and compatibility. If you are interested in this subject, feel free to get in touch.
 
 __Profiles__  
 - [Academic Website](https://chris-grieser.de/)
