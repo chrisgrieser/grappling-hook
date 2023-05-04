@@ -1,3 +1,8 @@
+- 2023-05-04	release 0.5.0
+- 2023-05-04	refactor: drop support for starred plugin
+- 2023-05-04	style: use rome for linting/formatting
+- 2023-04-07	chore
+- 2023-03-29	docs: update for Bookmarks plugin
 - 2023-03-19	release 0.4.1
 - 2023-03-19	feat: truncate statusbar item if too long
 - 2023-03-16	release 0.4.0
