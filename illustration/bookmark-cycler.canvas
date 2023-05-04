@@ -1,13 +1,13 @@
 {
 	"nodes":[
-		{"id":"4b6192584dcf595c","x":-900,"y":-180,"width":940,"height":560,"type":"group","label":"Grappling Hook's Star Cycler"},
-		{"id":"852be4a2a9c37015","x":-320,"y":-130,"width":320,"height":187,"type":"group","label":"same hotkey"},
-		{"id":"0825dc01fae0d44e","x":-700,"y":-23,"width":240,"height":65,"color":"2","type":"text","text":"#### starred note (modified today)"},
-		{"id":"50ca1ae33b7e8281","x":-700,"y":129,"width":240,"height":65,"color":"3","type":"text","text":"#### starred note (mod. yesterday)"},
-		{"id":"923c37856e280677","x":-700,"y":280,"width":240,"height":65,"color":"3","type":"text","text":"#### starred note (mod. last week)"},
-		{"id":"913905d2b6cfb944","x":-700,"y":-160,"width":240,"height":50,"color":"1","type":"text","text":"#### current note"},
-		{"id":"4c4f140cd72a2c96","x":-280,"y":-110,"width":240,"height":60,"color":"5","type":"text","text":"#### with selection"},
-		{"id":"d32abef198a75758","x":-280,"y":-23,"width":240,"height":60,"color":"4","type":"text","text":"#### with no selection"}
+		{"type":"group","id":"4b6192584dcf595c","x":-900,"y":-180,"width":940,"height":560,"label":"Bookmark Cycler"},
+		{"type":"group","id":"852be4a2a9c37015","x":-300,"y":-130,"width":300,"height":147,"label":"same hotkey"},
+		{"type":"text","text":"#### bookmarked note (modified today)","id":"0825dc01fae0d44e","x":-700,"y":-23,"width":270,"height":80,"color":"2"},
+		{"type":"text","text":"#### bookmarked note (mod. yesterday)","id":"50ca1ae33b7e8281","x":-700,"y":120,"width":270,"height":80,"color":"3"},
+		{"type":"text","text":"#### bookmarked note (mod. last week)","id":"923c37856e280677","x":-700,"y":280,"width":270,"height":80,"color":"3"},
+		{"type":"text","text":"#### current note","id":"913905d2b6cfb944","x":-700,"y":-160,"width":240,"height":50,"color":"1"},
+		{"type":"text","text":"#### with selection","id":"4c4f140cd72a2c96","x":-280,"y":-110,"width":260,"height":50,"color":"5"},
+		{"type":"text","text":"#### no selection","id":"d32abef198a75758","x":-280,"y":-48,"width":260,"height":50,"color":"4"}
 	],
 	"edges":[
 		{"id":"67b07314825e87cf","fromNode":"923c37856e280677","fromSide":"right","toNode":"0825dc01fae0d44e","toSide":"right","color":"4","label":"navigate"},

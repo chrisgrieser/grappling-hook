@@ -22,7 +22,7 @@ Goes to your most recently modified bookmarked note. If you are already at a boo
 
 When you have text selected, the bookmark cycler switches to its alternative mode, and copies the selected text to the last modified bookmarked note, regardless the note you are.
 
-![Illustration star cycler](./illustration/star-cycler.png)
+![Illustration bookmark cycler](./illustration/bookmark-cycler.png)
 
 This command is intended for when you work with a core set of main notes and many auxiliary notes.
 
@@ -36,7 +36,9 @@ Go to the last file you were at. As opposed to the `Navigate Back` command, usin
 *This command is essentially an implementation of vim's `:buffer #`.*
 
 ### Status Bar Items
+<!-- vale Google.Will = NO -->
 *Grappling Hook* adds the name of the file that the `Switch to Alternate Note` command will switch to the status bar.
+<!-- vale Google.Will = YES -->
 
 *Advanced Users:* the status bar items have been designed in a way that they can be customized with a [CSS snippet](https://help.obsidian.md/Extending+Obsidian/CSS+snippets). You can find the selectors in the plugin's [`styles.css` file](./styles.css).
 
