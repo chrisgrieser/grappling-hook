@@ -1,3 +1,6 @@
+- 2023-05-07	release 0.5.1
+- 2023-05-07	fix: bookmarks not being sorted by mod. date
+- 2023-05-04	docs: update illustration
 - 2023-05-04	release 0.5.0
 - 2023-05-04	refactor: drop support for starred plugin
 - 2023-05-04	style: use rome for linting/formatting
