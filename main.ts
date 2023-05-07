@@ -55,7 +55,7 @@ export default class GrapplingHookPlugin extends Plugin {
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
-	// Helpers
+	// HELPERS
 
 	getLeaf() {
 		return this.app.workspace.getLeaf();
@@ -109,12 +109,19 @@ export default class GrapplingHookPlugin extends Plugin {
 	}
 
 	async bookmarkCycler() {
-		const bookmarks = this.app.internalPlugins.plugins.bookmarks?.instance?.getBookmarks();
-		if (!bookmarks || bookmarks.length === 0) {
+		const bookmarkObjs = this.app.internalPlugins.plugins.bookmarks?.instance?.getBookmarks();
+		if (!bookmarkObjs || bookmarkObjs.length === 0) {
 			new Notice("There are no bookmarked files.");
 			return;
 		}
-		const bookmarkPaths = bookmarks.map((b) => b.path);
+
+		const sortedBookmarkPaths = bookmarkObjs
+			.map((bookmark) => bookmark.path)
+			.sort((a: string, b: string) => {
+				const aTfile = this.pathToTFile(a);
+				const bTfile = this.pathToTFile(b);
+				return bTfile.stat.mtime - aTfile.stat.mtime;
+			});
 
 		// getActiveViewOfType will return null if the active view is null, or is
 		// not of type MarkdownView
@@ -135,7 +142,7 @@ export default class GrapplingHookPlugin extends Plugin {
 		if (selection === "") {
 			const leaf = this.getLeaf();
 			const currentFilePath = this.app.workspace.getActiveFile().path;
-			const nextFile = this.getNextTFile(bookmarkPaths, currentFilePath);
+			const nextFile = this.getNextTFile(sortedBookmarkPaths, currentFilePath);
 			if (nextFile.path === currentFilePath) {
 				new Notice("Already at the sole starred file.");
 				return;
@@ -150,7 +157,7 @@ export default class GrapplingHookPlugin extends Plugin {
 				new Notice("Multiple Selections are not supported.");
 				return;
 			}
-			const firstStarTFile = this.pathToTFile(bookmarkPaths[0]);
+			const firstStarTFile = this.pathToTFile(sortedBookmarkPaths[0]);
 			await this.app.vault.append(firstStarTFile, selection + "\n");
 			new Notice(`Appended to "${firstStarTFile.basename}":\n\n"${selection}"`);
 		}
