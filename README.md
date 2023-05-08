@@ -26,6 +26,10 @@ When you have text selected, the bookmark cycler switches to its alternative mod
 
 This command is intended for when you work with a core set of main notes and many auxiliary notes.
 
+> __Note__  
+> Only bookmarked *files* are supported. Bookmarked *block* or *header* are
+> ignored.
+
 *This command is inspired by the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
 
 ### Alternate Note
@@ -33,7 +37,7 @@ Go to the last file you were at. As opposed to the `Navigate Back` command, usin
 
 ![Illustration alt-file](./illustration/alt-file.png)
 
-*This command is essentially an implementation of vim's `:buffer #`.*
+*This command is an emulation of vim's `:buffer #`.*
 
 ### Status Bar Items
 <!-- vale Google.Will = NO -->
