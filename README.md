@@ -26,8 +26,7 @@ When you have text selected, the bookmark cycler switches to its alternative mod
 This command is intended for when you work with a core set of main notes and many auxiliary notes.
 
 > __Note__  
-> Only bookmarked *files* are supported. Bookmarked *block* or *header* are
-> ignored.
+> Only bookmarked *files* are considered. Bookmarked *blocks* or *headers* are ignored.
 
 *This command is inspired by the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
 
