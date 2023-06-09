@@ -10,7 +10,6 @@ Obsidian Plugin for blazingly fast file switching. For people for whom using the
 - [Features](#features)
 	- [Bookmark Cycler](#bookmark-cycler)
 	- [Alternate Note](#alternate-note)
-	- [Status Bar Items](#status-bar-items)
 - [Installation](#installation)
 - [About the developer](#about-the-developer)
 <!--toc:end-->
@@ -39,12 +38,9 @@ Go to the last file you were at. As opposed to the `Navigate Back` command, usin
 
 *This command is an emulation of vim's `:buffer #`.*
 
-### Status Bar Items
-<!-- vale Google.Will = NO -->
-*Grappling Hook* adds the name of the file that the `Switch to Alternate Note` command will switch to the status bar.
-<!-- vale Google.Will = YES -->
+*Grappling Hook* also adds the name of the file that the `Switch to Alternate Note` command would switch to the status bar. 
 
-*Advanced Users:* the status bar items have been designed in a way that they can be customized with a [CSS snippet](https://help.obsidian.md/Extending+Obsidian/CSS+snippets). You can find the selectors in the plugin's [`styles.css` file](./styles.css).
+The status bar item has been designed for easy customizability with a [CSS snippet](https://help.obsidian.md/Extending+Obsidian/CSS+snippets). You can find the selectors in the plugin's [`styles.css` file](./styles.css).
 
 ## Installation
 The plugin is available in Obsidian's Community Plugin Browser via: `Settings` → `Community Plugins` → `Browse` → Search for *"🪝 Grappling Hook"*
