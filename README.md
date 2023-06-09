@@ -17,29 +17,25 @@ Obsidian Plugin for blazingly fast file switching. For people for whom using the
 ## Features
 
 ### Bookmark Cycler
-Goes to your most recently modified bookmarked note. If you are already at a bookmarked note, goes to the next bookmarked note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. 
+Goes to your most recently modified bookmarked note. If you are already at a bookmarked note, goes to the next bookmarked note, in order of the last modification date. This allows you to quickly cycle between a core set of files that are important. The command works well for workflows where you work with a dynamic core set of main notes and many auxiliary notes.
 
 When you have text selected, the bookmark cycler switches to its alternative mode, and copies the selected text to the last modified bookmarked note, regardless the note you are.
-
-![Illustration bookmark cycler](./illustration/bookmark-cycler.png)
-
-This command is intended for when you work with a core set of main notes and many auxiliary notes.
 
 > __Note__  
 > Only bookmarked *files* are considered. Bookmarked *blocks* or *headers* are ignored.
 
+![Illustration bookmark cycler](./illustration/bookmark-cycler.png)
+
+
+
 *This command is inspired by the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
 
 ### Alternate Note
-Go to the last file you were at. As opposed to the `Navigate Back` command, using the `Switch to Alternate Note` command moves you forward in history when you press it the second time. This allows you to rapidly switch between two files with only one hotkey. The alternate file is also displayed in the status bar.
+Go to the last file you were at. As opposed to the `Navigate Back` command, using the `Switch to Alternate Note` command moves you forward in history when you press it the second time. This allows you to rapidly switch between two files with only one hotkey. The name of the alternate file is also displayed in the status bar.
 
 ![Illustration alt-file](./illustration/alt-file.png)
 
 *This command is an emulation of vim's `:buffer #`.*
-
-*Grappling Hook* also adds the name of the file that the `Switch to Alternate Note` command would switch to the status bar. 
-
-The status bar item has been designed for easy customizability with a [CSS snippet](https://help.obsidian.md/Extending+Obsidian/CSS+snippets). You can find the selectors in the plugin's [`styles.css` file](./styles.css).
 
 ## Installation
 The plugin is available in Obsidian's Community Plugin Browser via: `Settings` → `Community Plugins` → `Browse` → Search for *"🪝 Grappling Hook"*
