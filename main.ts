@@ -116,6 +116,7 @@ export default class GrapplingHookPlugin extends Plugin {
 		}
 
 		const sortedBookmarkPaths = bookmarkObjs
+			.filter(bookmark => bookmark.type === "file") // ignore non-file bookmarks
 			.map((bookmark) => bookmark.path)
 			.sort((a: string, b: string) => {
 				const aTfile = this.pathToTFile(a);
