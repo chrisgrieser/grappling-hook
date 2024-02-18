@@ -48,7 +48,7 @@ the status bar.
 
 ## Installation
 The plugin is available in Obsidian's Community Plugin Browser via: `Settings` →
-`Community Plugins` → `Browse` → Search for *"🪝 Grappling Hook"*
+`Community Plugins` → `Browse` → Search for *"Grappling Hook"*
 
 <!-- vale Google.FirstPerson = NO -->
 ## About the developer
