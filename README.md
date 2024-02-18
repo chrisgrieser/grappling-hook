@@ -46,6 +46,10 @@ the status bar.
 ![Illustration alt-file](./illustration/alt-file.png)
 *This command is an emulation of vim's `:buffer #`.*
 
+### Cycle Tab/Split
+Like the Obsidian built-in command `Go to next tab`, but includes tabs in other
+splits, meaning you can cycle through *all* open tabs with one hotkey. 
+
 ## Installation
 The plugin is available in Obsidian's Community Plugin Browser via: `Settings` →
 `Community Plugins` → `Browse` → Search for *"Grappling Hook"*

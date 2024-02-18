@@ -48,6 +48,11 @@ export default class GrapplingHookPlugin extends Plugin {
 			name: "Cycle Bookmarked Notes / Send Selection to Last Bookmark",
 			callback: () => this.bookmarkCycler(),
 		});
+		this.addCommand({
+			id: "cycle-tabs-across-splits",
+			name: "Cycle Tabs (Across Splits)",
+			callback: () => this.cycleTabsAcrossSplits(),
+		});
 	}
 
 	async onunload() {
@@ -162,5 +167,21 @@ export default class GrapplingHookPlugin extends Plugin {
 			await this.app.vault.append(firstStarTFile, selection + "\n");
 			new Notice(`Appended to "${firstStarTFile.basename}":\n\n"${selection}"`);
 		}
+	}
+
+	cycleTabsAcrossSplits() {
+		const activeLeaf = this.app.workspace.getLeaf();
+		if (!activeLeaf) return;
+
+		const leaves = this.app.workspace.getLeavesOfType("markdown");
+		if (leaves.length < 2) {
+			new Notice("No other tabs to switch to.");
+			return;
+		}
+		const activeLeafIndex = leaves.findIndex((l) => l.id === activeLeaf.id);
+		if (activeLeafIndex === -1) return;
+		const nextLeafIndex = (activeLeafIndex + 1) % leaves.length;
+		const nextLeaf = leaves[nextLeafIndex] as WorkspaceLeaf;
+		this.app.workspace.setActiveLeaf(nextLeaf, { focus: true });
 	}
 }
