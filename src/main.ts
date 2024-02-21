@@ -1,21 +1,16 @@
 import { MarkdownView, Notice, Plugin, TFile, WorkspaceLeaf } from "obsidian";
 
 export default class GrapplingHookPlugin extends Plugin {
-	statusbarAltFile: HTMLElement;
+	altFileInStatusbar = this.addStatusBarItem();
 
-	async onload() {
+	override onload() {
 		console.info(this.manifest.name + " Plugin loaded.");
 
-		this.statusbarAltFile = this.addStatusBarItem();
-		this.displayAlternateNote();
-		this.registerEvent(
-			// second arg needs to be arrow-function, so that `this` is set
-			// correctly. https://discord.com/channels/686053708261228577/840286264964022302/1016341061641183282
-			this.app.workspace.on("file-open", () => {
-				this.displayAlternateNote();
-			}),
-		);
+		// statusbar
+		this.updateStatusbar();
+		this.registerEvent(this.app.workspace.on("file-open", () => this.updateStatusbar()));
 
+		// commands
 		this.addCommand({
 			id: "alternate-note",
 			name: "Switch to Alternate Note",
@@ -33,32 +28,21 @@ export default class GrapplingHookPlugin extends Plugin {
 		});
 	}
 
-	async onunload() {
+	override onunload() {
 		console.info(this.manifest.name + " Plugin unloaded.");
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
-	// HELPERS
+	// ALTERNATE_NOTE & STATUS BAR
 
-	getLeaf() {
-		return this.app.workspace.getLeaf();
+	updateStatusbar() {
+		const threshold = 30;
+		const altTFile = this.getAlternateNote();
+		let statusbarText = altTFile ? altTFile.basename : "";
+		if (statusbarText.length > threshold) statusbarText = statusbarText.slice(0, threshold) + "…";
+		this.altFileInStatusbar.setText(statusbarText);
 	}
 
-	pathToTFile(filepath: string) {
-		const file = this.app.vault.getAbstractFileByPath(filepath);
-		if (file instanceof TFile) return file;
-		return null;
-	}
-
-	getNextTFile(filePathArray: string[], currentFilePath: string) {
-		// findIndex() returns -1 if current file is not bookmarked
-		const currentIndex = filePathArray.findIndex((path: string) => path === currentFilePath);
-		const nextIndex = (currentIndex + 1) % filePathArray.length;
-		const nextFilePath = filePathArray[nextIndex];
-		return this.pathToTFile(nextFilePath);
-	}
-
-	// this function emulates vim's `:buffer #`
 	getAlternateNote() {
 		const recentFiles = this.app.workspace.getLastOpenFiles();
 		for (const filePath of recentFiles) {
@@ -68,84 +52,17 @@ export default class GrapplingHookPlugin extends Plugin {
 		return null;
 	}
 
-	//───────────────────────────────────────────────────────────────────────────
-	// STATUS BAR
-
-	displayAlternateNote() {
-		const threshold = 30;
-		const altTFile = this.getAlternateNote();
-		let statusbarText = altTFile ? altTFile.basename : "";
-		if (statusbarText.length > threshold) statusbarText = statusbarText.slice(0, threshold) + "…";
-		this.statusbarAltFile.setText(statusbarText);
-	}
-
-	//───────────────────────────────────────────────────────────────────────────
-	// COMMANDS
-
 	openAlternateNote() {
 		const altTFile = this.getAlternateNote();
 		if (!altTFile) {
 			new Notice("No valid recent note exists.");
 			return;
 		}
-		this.getLeaf().openFile(altTFile);
+		this.app.workspace.getLeaf().openFile(altTFile);
 	}
 
-	async bookmarkCycler() {
-		const bookmarkObjs = this.app.internalPlugins.plugins.bookmarks?.instance?.getBookmarks();
-		if (!bookmarkObjs || bookmarkObjs.length === 0) {
-			new Notice("There are no bookmarked files.");
-			return;
-		}
-
-		const sortedBookmarkPaths = bookmarkObjs
-			.filter(bookmark => bookmark.type === "file") // ignore non-file bookmarks
-			.map((bookmark) => bookmark.path)
-			.sort((a: string, b: string) => {
-				const aTfile = this.pathToTFile(a);
-				const bTfile = this.pathToTFile(b);
-				return bTfile.stat.mtime - aTfile.stat.mtime;
-			});
-
-		// getActiveViewOfType will return null if the active view is null, or is
-		// not of type MarkdownView
-		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-
-		const editor = view ? view.editor : null;
-		const mode = editor ? view.getState().mode : null;
-		let selection = "";
-		if (mode === "preview") {
-			// INFO base JS method instead of Obsidian API (only retrieves plain
-			// text without markup though)
-			selection = activeWindow.getSelection().toString();
-		} else if (editor && mode === "source") {
-			selection = editor.getSelection();
-		}
-
-		// cycle through bookmarks files
-		if (selection === "") {
-			const leaf = this.getLeaf();
-			const currentFilePath = this.app.workspace.getActiveFile().path;
-			const nextFile = this.getNextTFile(sortedBookmarkPaths, currentFilePath);
-			if (nextFile.path === currentFilePath) {
-				new Notice("Already at the sole starred file.");
-				return;
-			}
-			leaf.openFile(nextFile);
-		}
-
-		// append to last modified bookmark
-		else {
-			const numberOfCursors = editor ? editor.listSelections().length : 0;
-			if (numberOfCursors > 1) {
-				new Notice("Multiple Selections are not supported.");
-				return;
-			}
-			const firstStarTFile = this.pathToTFile(sortedBookmarkPaths[0]);
-			await this.app.vault.append(firstStarTFile, selection + "\n");
-			new Notice(`Appended to "${firstStarTFile.basename}":\n\n"${selection}"`);
-		}
-	}
+	//───────────────────────────────────────────────────────────────────────────
+	// CYCLE TABS
 
 	cycleTabsAcrossSplits() {
 		const activeLeaf = this.app.workspace.getLeaf();
@@ -161,5 +78,97 @@ export default class GrapplingHookPlugin extends Plugin {
 		const nextLeafIndex = (activeLeafIndex + 1) % leaves.length;
 		const nextLeaf = leaves[nextLeafIndex] as WorkspaceLeaf;
 		this.app.workspace.setActiveLeaf(nextLeaf, { focus: true });
+	}
+
+	//───────────────────────────────────────────────────────────────────────────
+	// CYCLE BOOKMARKS
+
+	pathToTFile(filepath: string): TFile | false {
+		const file = this.app.vault.getAbstractFileByPath(filepath);
+		if (file instanceof TFile) return file;
+		return false;
+	}
+
+	/** if not on a bookmarked file, or if there is currently no file open, return
+	 * the next bookmark file. If there is no bookmarked files, return false */
+	getNextTFile(filePathArray: string[], currentFilePath: string | undefined): TFile | false {
+		// `findIndex()` returns -1 if current file is not bookmarked, which gives
+		// simply the first item, which is what we want anyway
+		const currentIndex = filePathArray.findIndex((path: string) => path === currentFilePath);
+
+		const nextIndex = (currentIndex + 1) % filePathArray.length;
+		const nextFilePath = filePathArray[nextIndex] || "";
+		return this.pathToTFile(nextFilePath);
+	}
+
+	async bookmarkCycler() {
+		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+		const editor = view?.editor || null;
+		const mode = view?.getState().mode;
+
+		// get bookmarks
+		const bookmarkObjs =
+			this.app.internalPlugins.plugins.bookmarks?.instance?.getBookmarks() || [];
+		const sortedBookmarkPaths = bookmarkObjs
+			.reduce((acc: string[], bookmark) => {
+				if (bookmark.type === "file") {
+					const file = this.app.vault.getAbstractFileByPath(bookmark.path as string);
+					if (file instanceof TFile && bookmark.path) acc.push(bookmark.path);
+				}
+				return acc;
+			}, [])
+			.sort((a, b) => {
+				const aTfile = this.pathToTFile(a);
+				const bTfile = this.pathToTFile(b);
+				if (!aTfile || !bTfile) return 0;
+				return bTfile.stat.mtime - aTfile.stat.mtime;
+			});
+		console.log("👽 sortedBookmarkPaths:", sortedBookmarkPaths);
+
+		if (bookmarkObjs.length === 0) {
+			new Notice("There are no bookmarked files.");
+			return;
+		}
+
+		// get selection
+		let selection = "";
+		if (editor && mode === "source") {
+			selection = editor.getSelection();
+		} else if (mode === "preview") {
+			// in preview mode, get selection from active window (electron)
+			// CAVEAT only retrieves plain text without markup though
+			// biome-ignore lint/correctness/noUndeclaredVariables: electron
+			selection = activeWindow?.getSelection()?.toString() || "";
+		}
+
+		if (!selection) {
+			// no selection: cycle through bookmarks files
+			const leaf = this.app.workspace.getLeaf();
+			const currentFilePath = this.app.workspace.getActiveFile()?.path;
+			const nextFile = this.getNextTFile(sortedBookmarkPaths, currentFilePath);
+			if (!nextFile) {
+				new Notice("There are no valid bookmarked files.");
+				return;
+			}
+			if (nextFile.path === currentFilePath) {
+				new Notice("Already at the sole starred file.");
+				return;
+			}
+			leaf.openFile(nextFile);
+		} else {
+			// with selection: append to last modified bookmark
+			const numberOfCursors = editor ? editor.listSelections().length : 0;
+			if (numberOfCursors > 1) {
+				new Notice("Multiple Selections are not supported.");
+				return;
+			}
+			const firstStarTFile = this.pathToTFile(sortedBookmarkPaths[0] as string);
+			if (!firstStarTFile) {
+				new Notice("There are no valid bookmarked files.");
+				return;
+			}
+			await this.app.vault.append(firstStarTFile, selection + "\n");
+			new Notice(`Appended to "${firstStarTFile.basename}":\n\n"${selection}"`);
+		}
 	}
 }

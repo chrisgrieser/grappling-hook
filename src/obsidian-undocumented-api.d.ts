@@ -1,10 +1,10 @@
 import "obsidian";
 
-interface bookmarkItem {
+interface BookmarkItem {
 	type: string;
 	title: string; // filename
 	path?: string;
-	items: bookmarkItem[]; // if type "group", then can recursively contain itself
+	items: BookmarkItem[]; // if type "group", then can recursively contain itself
 }
 
 declare module "obsidian" {
@@ -13,8 +13,8 @@ declare module "obsidian" {
 			plugins: {
 				bookmarks: {
 					instance: {
-						items: bookmarkItem[];
-						getBookmarks: () => bookmarkItem[];
+						items: BookmarkItem[];
+						getBookmarks: () => BookmarkItem[];
 					};
 				};
 			};
