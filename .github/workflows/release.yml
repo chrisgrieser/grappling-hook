@@ -1,29 +1,30 @@
 name: Release Obsidian plugin
 
-on: # yamllint disable rule:truthy
+on:
   push:
     tags:
       - "*"
 
 env:
-  PLUGIN_NAME: grappling-hook # Change this to match the id of your plugin.
+  PLUGIN_NAME: ${{ github.event.repository.name }}
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: "17.x" # node version, get via `node --version`
+          node-version: "21.x"
 
       - name: Build
-        id: build # remove styles.css in cp line, if it isn't used
+        id: build
         run: |
           npm install
-          npm run build
+          node esbuild.config.mjs minified
           mkdir ${{ env.PLUGIN_NAME }}
           cp main.js manifest.json styles.css ${{ env.PLUGIN_NAME }}
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
