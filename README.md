@@ -12,6 +12,7 @@ Milo.](https://youtu.be/mcrcRXp5d8A?t=462)
 - [Features](#features)
 	* [Bookmark Cycler](#bookmark-cycler)
 	* [Alternate Note](#alternate-note)
+	* [Cycle Tab/Split](#cycle-tabsplit)
 - [Installation](#installation)
 - [About the developer](#about-the-developer)
 
@@ -48,7 +49,7 @@ the status bar.
 
 ### Cycle Tab/Split
 Like the Obsidian built-in command `Go to next tab`, but includes tabs in other
-splits, meaning you can cycle through *all* open tabs with one hotkey. 
+splits, meaning you can cycle through *all* open tabs with one hotkey.
 
 ## Installation
 The plugin is available in Obsidian's Community Plugin Browser via: `Settings` →
