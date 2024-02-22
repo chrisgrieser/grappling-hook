@@ -38,15 +38,15 @@ export default class GrapplingHookPlugin extends Plugin {
 	updateStatusbar() {
 		const threshold = 30;
 		const altTFile = this.getAlternateNote();
-		let statusbarText = altTFile ? altTFile.basename : "";
-		if (statusbarText.length > threshold) statusbarText = statusbarText.slice(0, threshold) + "…";
-		this.altFileInStatusbar.setText(statusbarText);
+		let text = altTFile ? altTFile.basename : "";
+		if (text.length > threshold) text = text.slice(0, threshold) + "…";
+		this.altFileInStatusbar.setText(text);
 	}
 
 	getAlternateNote() {
 		const recentFiles = this.app.workspace.getLastOpenFiles();
 		for (const filePath of recentFiles) {
-			const altTFile = this.pathToTFile(filePath);
+			const altTFile = this.app.vault.getFileByPath(filePath);
 			if (altTFile) return altTFile; // checks file existence, e.g. for deleted files
 		}
 		return null;
@@ -74,7 +74,10 @@ export default class GrapplingHookPlugin extends Plugin {
 			return;
 		}
 		const activeLeafIndex = leaves.findIndex((l) => l.id === activeLeaf.id);
-		if (activeLeafIndex === -1) return;
+		if (activeLeafIndex === -1) {
+			new Notice("No active tab found.");
+			return;
+		}
 		const nextLeafIndex = (activeLeafIndex + 1) % leaves.length;
 		const nextLeaf = leaves[nextLeafIndex] as WorkspaceLeaf;
 		this.app.workspace.setActiveLeaf(nextLeaf, { focus: true });
@@ -83,33 +86,28 @@ export default class GrapplingHookPlugin extends Plugin {
 	//───────────────────────────────────────────────────────────────────────────
 	// CYCLE BOOKMARKS
 
-	pathToTFile(filepath: string): TFile | false {
-		const file = this.app.vault.getAbstractFileByPath(filepath);
-		if (file instanceof TFile) return file;
-		return false;
-	}
-
 	/** if not on a bookmarked file, or if there is currently no file open, return
 	 * the next bookmark file. If there is no bookmarked files, return false */
-	getNextTFile(filePathArray: string[], currentFilePath: string | undefined): TFile | false {
+	getNextTFile(filePathArray: string[], currentFilePath: string | undefined): TFile | null {
 		// `findIndex()` returns -1 if current file is not bookmarked, which gives
-		// simply the first item, which is what we want anyway
+		// simply `0` as next index, resulting in the first bookmarked file, which
+		// is what we want
 		const currentIndex = filePathArray.findIndex((path: string) => path === currentFilePath);
 
 		const nextIndex = (currentIndex + 1) % filePathArray.length;
 		const nextFilePath = filePathArray[nextIndex] || "";
-		return this.pathToTFile(nextFilePath);
+		return this.app.vault.getFileByPath(nextFilePath);
 	}
 
 	async bookmarkCycler() {
 		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-		const editor = view?.editor || null;
+		const editor = view?.editor;
 		const mode = view?.getState().mode;
 
-		// get bookmarks
+		// get BOOKMARKS
 		const bookmarkObjs =
 			this.app.internalPlugins.plugins.bookmarks?.instance?.getBookmarks() || [];
-		const sortedBookmarkPaths = bookmarkObjs
+		const bookmarkPaths = bookmarkObjs
 			.reduce((acc: string[], bookmark) => {
 				if (bookmark.type === "file") {
 					const file = this.app.vault.getAbstractFileByPath(bookmark.path as string);
@@ -118,19 +116,17 @@ export default class GrapplingHookPlugin extends Plugin {
 				return acc;
 			}, [])
 			.sort((a, b) => {
-				const aTfile = this.pathToTFile(a);
-				const bTfile = this.pathToTFile(b);
+				const aTfile = this.app.vault.getFileByPath(a);
+				const bTfile = this.app.vault.getFileByPath(b);
 				if (!aTfile || !bTfile) return 0;
 				return bTfile.stat.mtime - aTfile.stat.mtime;
 			});
-		console.log("👽 sortedBookmarkPaths:", sortedBookmarkPaths);
-
 		if (bookmarkObjs.length === 0) {
 			new Notice("There are no bookmarked files.");
 			return;
 		}
 
-		// get selection
+		// get SELECTION
 		let selection = "";
 		if (editor && mode === "source") {
 			selection = editor.getSelection();
@@ -141,11 +137,19 @@ export default class GrapplingHookPlugin extends Plugin {
 			selection = activeWindow?.getSelection()?.toString() || "";
 		}
 
+		// NO selection: cycle through bookmarks files
+		// WITH selection: append to last modified bookmark
 		if (!selection) {
-			// no selection: cycle through bookmarks files
 			const leaf = this.app.workspace.getLeaf();
 			const currentFilePath = this.app.workspace.getActiveFile()?.path;
-			const nextFile = this.getNextTFile(sortedBookmarkPaths, currentFilePath);
+
+			// `findIndex()` returns -1 if current file is not bookmarked, which gives
+			// simply `0` as next index, resulting in the first bookmarked file, which
+			// is what we want
+			const currentIndex = bookmarkPaths.findIndex((path: string) => path === currentFilePath);
+			const nextIndex = (currentIndex + 1) % bookmarkPaths.length;
+			const nextFilePath = bookmarkPaths[nextIndex] || "";
+			const nextFile = this.app.vault.getFileByPath(nextFilePath);
 			if (!nextFile) {
 				new Notice("There are no valid bookmarked files.");
 				return;
@@ -156,13 +160,12 @@ export default class GrapplingHookPlugin extends Plugin {
 			}
 			leaf.openFile(nextFile);
 		} else {
-			// with selection: append to last modified bookmark
-			const numberOfCursors = editor ? editor.listSelections().length : 0;
+			const numberOfCursors = editor?.listSelections().length || 0;
 			if (numberOfCursors > 1) {
 				new Notice("Multiple Selections are not supported.");
 				return;
 			}
-			const firstStarTFile = this.pathToTFile(sortedBookmarkPaths[0] as string);
+			const firstStarTFile = this.app.vault.getFileByPath(bookmarkPaths[0] as string);
 			if (!firstStarTFile) {
 				new Notice("There are no valid bookmarked files.");
 				return;
