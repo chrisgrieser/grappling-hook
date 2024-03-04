@@ -1,5 +1,4 @@
 # 🪝 Grappling Hook
-
 ![Obsidian Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22grappling-hook%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json&style=plastic)
 ![Last Release](https://img.shields.io/github/v/release/chrisgrieser/grappling-hook?label=Latest%20Release&style=plastic)
 
@@ -44,16 +43,18 @@ you press it the second time. This allows you to rapidly switch between two
 files with only one hotkey. The name of the alternate file is also displayed in
 the status bar.
 
+If the alternate file is already open in another tab, it switches to that
+tab. If not, the alternate file is opened in the current tab.
+
 ![Illustration alt-file](./illustration/alt-file.png)
-*This command is an emulation of vim's `:buffer #`.*
+*This command is equivalent to vim's `:buffer #`.*
 
 ### Cycle Tab/Split
 Like the Obsidian built-in command `Go to next tab`, but includes tabs in other
 splits, meaning you can cycle through *all* open tabs with one hotkey.
 
 ## Installation
-The plugin is available in Obsidian's Community Plugin Browser via: `Settings` →
-`Community Plugins` → `Browse` → Search for *"Grappling Hook"*
+➡️ [Install in Obsidian](https://obsidian.md/plugins?id=grappling-hook)
 
 <!-- vale Google.FirstPerson = NO -->
 ## About the developer

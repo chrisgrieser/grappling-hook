@@ -58,7 +58,14 @@ export default class GrapplingHookPlugin extends Plugin {
 			new Notice("No valid recent note exists.");
 			return;
 		}
-		this.app.workspace.getLeaf().openFile(altTFile);
+
+		const openTabs = this.app.workspace.getLeavesOfType("markdown");
+		const altFileOpenInTab = openTabs.find((tab) => {
+			return (tab.view as MarkdownView).file?.path === altTFile.path;
+		});
+
+		if (altFileOpenInTab) this.app.workspace.setActiveLeaf(altFileOpenInTab, { focus: true });
+		else this.app.workspace.getLeaf().openFile(altTFile);
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
