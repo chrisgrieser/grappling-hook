@@ -68,18 +68,18 @@ export default class GrapplingHookPlugin extends Plugin {
 		const activeLeaf = this.app.workspace.getLeaf();
 		if (!activeLeaf) return;
 
-		const leaves = this.app.workspace.getLeavesOfType("markdown");
-		if (leaves.length < 2) {
+		const openTabs = this.app.workspace.getLeavesOfType("markdown");
+		if (openTabs.length < 2) {
 			new Notice("No other tabs to switch to.");
 			return;
 		}
-		const activeLeafIndex = leaves.findIndex((l) => l.id === activeLeaf.id);
-		if (activeLeafIndex === -1) {
+		const activeTabIndex = openTabs.findIndex((l) => l.id === activeLeaf.id);
+		if (activeTabIndex === -1) {
 			new Notice("No active tab found.");
 			return;
 		}
-		const nextLeafIndex = (activeLeafIndex + 1) % leaves.length;
-		const nextLeaf = leaves[nextLeafIndex] as WorkspaceLeaf;
+		const nextLeafIndex = (activeTabIndex + 1) % openTabs.length;
+		const nextLeaf = openTabs[nextLeafIndex] as WorkspaceLeaf;
 		this.app.workspace.setActiveLeaf(nextLeaf, { focus: true });
 	}
 
