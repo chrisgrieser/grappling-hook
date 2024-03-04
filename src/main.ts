@@ -105,8 +105,7 @@ export default class GrapplingHookPlugin extends Plugin {
 		const mode = view?.getState().mode;
 
 		// get BOOKMARKS
-		const bookmarkObjs =
-			this.app.internalPlugins.plugins.bookmarks?.instance?.getBookmarks() || [];
+		const bookmarkObjs = this.app.internalPlugins.plugins.bookmarks?.instance?.getBookmarks() || [];
 		const bookmarkPaths = bookmarkObjs
 			.reduce((acc: string[], bookmark) => {
 				if (bookmark.type === "file") {
