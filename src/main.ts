@@ -3,7 +3,7 @@ import { MarkdownView, Notice, Plugin, TFile, WorkspaceLeaf } from "obsidian";
 export default class GrapplingHookPlugin extends Plugin {
 	altFileInStatusbar = this.addStatusBarItem();
 
-	override onload() {
+	override onload(): void {
 		console.info(this.manifest.name + " Plugin loaded.");
 
 		// statusbar
@@ -28,14 +28,14 @@ export default class GrapplingHookPlugin extends Plugin {
 		});
 	}
 
-	override onunload() {
+	override onunload(): void {
 		console.info(this.manifest.name + " Plugin unloaded.");
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
 	// ALTERNATE_NOTE & STATUS BAR
 
-	updateStatusbar() {
+	updateStatusbar(): void {
 		const threshold = 30;
 		const altTFile = this.getAlternateNote();
 		let text = altTFile ? altTFile.basename : "";
@@ -43,7 +43,7 @@ export default class GrapplingHookPlugin extends Plugin {
 		this.altFileInStatusbar.setText(text);
 	}
 
-	getAlternateNote() {
+	getAlternateNote(): TFile | null {
 		const recentFiles = this.app.workspace.getLastOpenFiles();
 		for (const filePath of recentFiles) {
 			const altTFile = this.app.vault.getFileByPath(filePath);
@@ -52,7 +52,7 @@ export default class GrapplingHookPlugin extends Plugin {
 		return null;
 	}
 
-	openAlternateNote() {
+	openAlternateNote(): void {
 		const altTFile = this.getAlternateNote();
 		if (!altTFile) {
 			new Notice("No valid recent note exists.");
@@ -64,7 +64,7 @@ export default class GrapplingHookPlugin extends Plugin {
 	//───────────────────────────────────────────────────────────────────────────
 	// CYCLE TABS
 
-	cycleTabsAcrossSplits() {
+	cycleTabsAcrossSplits(): void {
 		const activeLeaf = this.app.workspace.getLeaf();
 		if (!activeLeaf) return;
 
@@ -99,7 +99,7 @@ export default class GrapplingHookPlugin extends Plugin {
 		return this.app.vault.getFileByPath(nextFilePath);
 	}
 
-	async bookmarkCycler() {
+	async bookmarkCycler(): Promise<void> {
 		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 		const editor = view?.editor;
 		const mode = view?.getState().mode;
