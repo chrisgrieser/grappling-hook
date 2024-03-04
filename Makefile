@@ -1,10 +1,14 @@
 .PHONY: build init format check release
 
-# build & open dev-vault (if on macOS)
+# build & open dev-vault
 build:
-	VAULT_NAME="Development" ; \
+	dev_vault_path="$$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Development" ; \
+	plugin_path="$$dev_vault_path/.obsidian/plugins/grappling-hook" && \
+	vault_name="$$(basename "$$dev_vault_path")" && \
 	node esbuild.config.mjs && \
-	if [[ "$$OSTYPE" =~ darwin* ]] ; then open "obsidian://open?vault=$$VAULT_NAME" ; fi
+	cp -f main.js manifest.json styles.css "$$plugin_path" && \
+	open "obsidian://open?vault=$$vault_name" && \
+	open "obsidian://advanced-uri?vault=$$vault_name&commandid=app%253Areload"
 
 # install dependencies, build, enable git hooks
 init:
