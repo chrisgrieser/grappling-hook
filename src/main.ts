@@ -32,6 +32,12 @@ export default class GrapplingHookPlugin extends Plugin {
 		console.info(this.manifest.name + " Plugin unloaded.");
 	}
 
+	getRootLeaves(): WorkspaceLeaf[] {
+		const rootLeaves: WorkspaceLeaf[] = [];
+		this.app.workspace.iterateRootLeaves((leaf) => rootLeaves.push(leaf));
+		return rootLeaves;
+	}
+
 	//───────────────────────────────────────────────────────────────────────────
 	// ALTERNATE_NOTE & STATUS BAR
 
@@ -59,7 +65,7 @@ export default class GrapplingHookPlugin extends Plugin {
 			return;
 		}
 
-		const openTabs = this.app.workspace.getLeavesOfType("markdown");
+		const openTabs = this.getRootLeaves();
 		const altFileOpenInTab = openTabs.find((tab) => {
 			return (tab.view as MarkdownView).file?.path === altTFile.path;
 		});
@@ -75,7 +81,7 @@ export default class GrapplingHookPlugin extends Plugin {
 		const activeLeaf = this.app.workspace.getLeaf();
 		if (!activeLeaf) return;
 
-		const openTabs = this.app.workspace.getLeavesOfType("markdown");
+		const openTabs = this.getRootLeaves();
 		if (openTabs.length < 2) {
 			new Notice("No other tabs to switch to.");
 			return;
