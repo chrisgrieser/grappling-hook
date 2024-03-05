@@ -158,7 +158,6 @@ export default class GrapplingHookPlugin extends Plugin {
 		// NO selection: cycle through bookmarks files
 		// WITH selection: append to last modified bookmark
 		if (!selection) {
-			const leaf = this.app.workspace.getLeaf();
 			const currentFilePath = this.app.workspace.getActiveFile()?.path;
 
 			// `findIndex()` returns -1 if current file is not bookmarked, which gives
@@ -176,7 +175,7 @@ export default class GrapplingHookPlugin extends Plugin {
 				new Notice("Already at the sole starred file.");
 				return;
 			}
-			leaf.openFile(nextFile);
+			this.app.workspace.getLeaf().openFile(nextFile);
 		} else {
 			const numberOfCursors = editor?.listSelections().length || 0;
 			if (numberOfCursors > 1) {
