@@ -1,4 +1,4 @@
-import { MarkdownView, Notice, Plugin, TFile, WorkspaceLeaf } from "obsidian";
+import { FileView, MarkdownView, Notice, Plugin, TFile, WorkspaceLeaf } from "obsidian";
 
 export default class GrapplingHookPlugin extends Plugin {
 	altFileInStatusbar = this.addStatusBarItem();
@@ -34,7 +34,9 @@ export default class GrapplingHookPlugin extends Plugin {
 
 	getRootLeaves(): WorkspaceLeaf[] {
 		const rootLeaves: WorkspaceLeaf[] = [];
-		this.app.workspace.iterateRootLeaves((leaf) => rootLeaves.push(leaf));
+		this.app.workspace.iterateRootLeaves((leaf) => {
+			rootLeaves.push(leaf);
+		});
 		return rootLeaves;
 	}
 
@@ -66,8 +68,12 @@ export default class GrapplingHookPlugin extends Plugin {
 		}
 
 		const openTabs = this.getRootLeaves();
+		if (openTabs.length === 0) {
+			new Notice("No open tab.");
+			return;
+		}
 		const altFileOpenInTab = openTabs.find((tab) => {
-			return (tab.view as MarkdownView).file?.path === altTFile.path;
+			return (tab.view as FileView).file?.path === altTFile.path;
 		});
 
 		if (altFileOpenInTab) this.app.workspace.setActiveLeaf(altFileOpenInTab, { focus: true });
