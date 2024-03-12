@@ -16,7 +16,7 @@ esbuild
 		bundle: true,
 		external: ["obsidian", "electron", ...builtins],
 		format: "cjs",
-		target: "es2021",
+		target: "es2022",
 		logLevel: "info",
 		sourcemap: false,
 		treeShaking: true,
