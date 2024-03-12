@@ -8,18 +8,19 @@ Milo.](https://youtu.be/mcrcRXp5d8A?t=462)
 
 <!-- toc -->
 
-- [Features](#features)
-	* [Bookmark Cycler](#bookmark-cycler)
-	* [Alternate Note](#alternate-note)
-	* [Cycle Tab/Split](#cycle-tabsplit)
+- [Commands](#commands)
+	* [Bookmark cycler](#bookmark-cycler)
+	* [Alternate note](#alternate-note)
+	* [Cycle tab/split](#cycle-tabsplit)
+	* [Next/previous file in current folder](#nextprevious-file-in-current-folder)
 - [Installation](#installation)
 - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
 
-## Features
+## Commands
 
-### Bookmark Cycler
+### Bookmark cycler
 Goes to your most recently modified bookmarked note. If you are already at a
 bookmarked note, goes to the next bookmarked note, in order of the last
 modification date. This allows you to quickly cycle between a core set of files
@@ -36,7 +37,7 @@ regardless the note you are.
 ![Illustration bookmark cycler](./illustration/bookmark-cycler.png)
 *This command is inspired by the [Harpoon plugin for neovim](https://github.com/ThePrimeagen/harpoon).*
 
-### Alternate Note
+### Alternate note
 Go to the last file you were at. As opposed to the `Navigate Back` command,
 using the `Switch to Alternate Note` command moves you forward in history when
 you press it the second time. This allows you to rapidly switch between two
@@ -49,9 +50,12 @@ tab. If not, the alternate file is opened in the current tab.
 ![Illustration alt-file](./illustration/alt-file.png)
 *This command is equivalent to vim's `:buffer #`.*
 
-### Cycle Tab/Split
+### Cycle tab/split
 Like the Obsidian built-in command `Go to next tab`, but includes tabs in other
 splits, meaning you can cycle through *all* open tabs with one hotkey.
+
+### Next/previous file in current folder
+Cycles through all files in the current folder, in alphabetical order.
 
 ## Installation
 ➡️ [Install in Obsidian](https://obsidian.md/plugins?id=grappling-hook)

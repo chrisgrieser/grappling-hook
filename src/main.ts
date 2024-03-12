@@ -7,24 +7,34 @@ export default class GrapplingHookPlugin extends Plugin {
 		console.info(this.manifest.name + " Plugin loaded.");
 
 		// statusbar
-		this.updateStatusbar();
+		this.updateStatusbar(); // initialize
 		this.registerEvent(this.app.workspace.on("file-open", () => this.updateStatusbar()));
 
 		// commands
 		this.addCommand({
 			id: "alternate-note",
-			name: "Switch to Alternate Note",
+			name: "Switch to alternate note",
 			callback: () => this.openAlternateNote(),
 		});
 		this.addCommand({
 			id: "cycle-starred-notes",
-			name: "Cycle Bookmarked Notes / Send Selection to Last Bookmark",
+			name: "Cycle bookmarked notes / send selection to last bookmark",
 			callback: () => this.bookmarkCycler(),
 		});
 		this.addCommand({
 			id: "cycle-tabs-across-splits",
-			name: "Cycle Tabs (Across Splits)",
+			name: "Cycle tabs (across splits)",
 			callback: () => this.cycleTabsAcrossSplits(),
+		});
+		this.addCommand({
+			id: "next-file-in-current-folder",
+			name: "Next file in current folder",
+			callback: () => this.cycleFilesInCurrentFolder("next"),
+		});
+		this.addCommand({
+			id: "previous-file-in-current-folder",
+			name: "Previous file in current folder",
+			callback: () => this.cycleFilesInCurrentFolder("prev"),
 		});
 	}
 
@@ -78,6 +88,38 @@ export default class GrapplingHookPlugin extends Plugin {
 
 		if (altFileOpenInTab) this.app.workspace.setActiveLeaf(altFileOpenInTab, { focus: true });
 		else this.app.workspace.getLeaf().openFile(altTFile);
+	}
+
+	//───────────────────────────────────────────────────────────────────────────
+
+	cycleFilesInCurrentFolder(dir: "next" | "prev"): void {
+		const currentFile = this.app.workspace.getActiveFile();
+		if (!currentFile) {
+			new Notice("No file open.");
+			return;
+		}
+		if (!currentFile.parent) {
+			new Notice("File has no parent folder.");
+			return;
+		}
+
+		const filesInFolder = currentFile.parent.children
+			.filter((file) => file instanceof TFile)
+			.sort((a, b) => (a.name < b.name ? -1 : 1)) as TFile[];
+
+		if (filesInFolder.length < 2) {
+			new Notice("No other files in this folder to switch to.");
+			return;
+		}
+
+		const currentIndex = filesInFolder.findIndex((file) => file.path === currentFile.path);
+		const nextIndex =
+			dir === "next"
+				? (currentIndex + 1) % filesInFolder.length
+				: (currentIndex + filesInFolder.length - 1) % filesInFolder.length;
+		const nextFile = filesInFolder[nextIndex] as TFile;
+
+		this.app.workspace.getLeaf().openFile(nextFile);
 	}
 
 	//───────────────────────────────────────────────────────────────────────────
