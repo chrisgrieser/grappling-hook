@@ -1,236 +1,48 @@
-import { FileView, MarkdownView, Notice, Plugin, TFile, WorkspaceLeaf } from "obsidian";
+import { Plugin } from "obsidian";
+import { openAlternateNote, updateStatusbar } from "./commands/altfile";
+import { bookmarkCycler } from "./commands/bookmark-cycler";
+import { cycleFilesInCurrentFolder } from "./commands/cycle-files-in-folder";
+import { cycleTabsAcrossSplits } from "./commands/cycle-tabs-across-splits";
 
-export default class GrapplingHookPlugin extends Plugin {
+export default class GrapplingHook extends Plugin {
 	altFileInStatusbar = this.addStatusBarItem();
 
 	override onload(): void {
 		console.info(this.manifest.name + " Plugin loaded.");
 
 		// statusbar
-		this.updateStatusbar(); // initialize
-		this.registerEvent(this.app.workspace.on("file-open", () => this.updateStatusbar()));
+		updateStatusbar(this); // initialize
+		this.registerEvent(this.app.workspace.on("file-open", () => updateStatusbar(this)));
 
 		// commands
 		this.addCommand({
 			id: "alternate-note",
 			name: "Switch to alternate note",
-			callback: () => this.openAlternateNote(),
+			callback: () => openAlternateNote(this),
 		});
 		this.addCommand({
 			id: "cycle-starred-notes",
 			name: "Cycle bookmarked notes / send selection to last bookmark",
-			callback: () => this.bookmarkCycler(),
+			callback: () => bookmarkCycler(this),
 		});
 		this.addCommand({
 			id: "cycle-tabs-across-splits",
 			name: "Cycle tabs (across splits)",
-			callback: () => this.cycleTabsAcrossSplits(),
+			callback: () => cycleTabsAcrossSplits(this),
 		});
 		this.addCommand({
 			id: "next-file-in-current-folder",
 			name: "Next file in current folder",
-			callback: () => this.cycleFilesInCurrentFolder("next"),
+			callback: () => cycleFilesInCurrentFolder(this, "next"),
 		});
 		this.addCommand({
 			id: "previous-file-in-current-folder",
 			name: "Previous file in current folder",
-			callback: () => this.cycleFilesInCurrentFolder("prev"),
+			callback: () => cycleFilesInCurrentFolder(this, "prev"),
 		});
 	}
 
 	override onunload(): void {
 		console.info(this.manifest.name + " Plugin unloaded.");
-	}
-
-	getRootLeaves(): WorkspaceLeaf[] {
-		const rootLeaves: WorkspaceLeaf[] = [];
-		this.app.workspace.iterateRootLeaves((leaf) => {
-			rootLeaves.push(leaf);
-		});
-		return rootLeaves;
-	}
-
-	//───────────────────────────────────────────────────────────────────────────
-	// ALTERNATE_NOTE & STATUS BAR
-
-	updateStatusbar(): void {
-		const threshold = 30;
-		const altTFile = this.getAlternateNote();
-		let text = altTFile ? altTFile.basename : "";
-		if (text.length > threshold) text = text.slice(0, threshold) + "…";
-		this.altFileInStatusbar.setText(text);
-	}
-
-	getAlternateNote(): TFile | null {
-		const recentFiles = this.app.workspace.getLastOpenFiles();
-		for (const filePath of recentFiles) {
-			const altTFile = this.app.vault.getFileByPath(filePath);
-			if (altTFile) return altTFile; // checks file existence, e.g. for deleted files
-		}
-		return null;
-	}
-
-	openAlternateNote(): void {
-		const altTFile = this.getAlternateNote();
-		if (!altTFile) {
-			new Notice("No valid recent note exists.");
-			return;
-		}
-
-		const openTabs = this.getRootLeaves();
-		if (openTabs.length === 0) {
-			new Notice("No open tab.");
-			return;
-		}
-		const altFileOpenInTab = openTabs.find((tab) => {
-			return (tab.view as FileView).file?.path === altTFile.path;
-		});
-
-		if (altFileOpenInTab) this.app.workspace.setActiveLeaf(altFileOpenInTab, { focus: true });
-		else this.app.workspace.getLeaf().openFile(altTFile);
-	}
-
-	//───────────────────────────────────────────────────────────────────────────
-
-	cycleFilesInCurrentFolder(dir: "next" | "prev"): void {
-		const currentFile = this.app.workspace.getActiveFile();
-		if (!currentFile) {
-			new Notice("No file open.");
-			return;
-		}
-		if (!currentFile.parent) {
-			new Notice("File has no parent folder.");
-			return;
-		}
-
-		const filesInFolder = currentFile.parent.children
-			.filter((file) => file instanceof TFile)
-			.sort((a, b) => (a.name < b.name ? -1 : 1)) as TFile[];
-
-		if (filesInFolder.length < 2) {
-			new Notice("No other files in this folder to switch to.");
-			return;
-		}
-
-		const currentIndex = filesInFolder.findIndex((file) => file.path === currentFile.path);
-		const nextIndex =
-			dir === "next"
-				? (currentIndex + 1) % filesInFolder.length
-				: (currentIndex + filesInFolder.length - 1) % filesInFolder.length;
-		const nextFile = filesInFolder[nextIndex] as TFile;
-
-		this.app.workspace.getLeaf().openFile(nextFile);
-	}
-
-	//───────────────────────────────────────────────────────────────────────────
-	// CYCLE TABS
-
-	cycleTabsAcrossSplits(): void {
-		const activeLeaf = this.app.workspace.getLeaf();
-		if (!activeLeaf) return;
-
-		const openTabs = this.getRootLeaves();
-		if (openTabs.length < 2) {
-			new Notice("No other tabs to switch to.");
-			return;
-		}
-		const activeTabIndex = openTabs.findIndex((l) => l.id === activeLeaf.id);
-		if (activeTabIndex === -1) {
-			new Notice("No active tab found.");
-			return;
-		}
-		const nextLeafIndex = (activeTabIndex + 1) % openTabs.length;
-		const nextLeaf = openTabs[nextLeafIndex] as WorkspaceLeaf;
-		this.app.workspace.setActiveLeaf(nextLeaf, { focus: true });
-	}
-
-	//───────────────────────────────────────────────────────────────────────────
-	// CYCLE BOOKMARKS
-
-	/** if not on a bookmarked file, or if there is currently no file open, return
-	 * the next bookmark file. If there is no bookmarked files, return false */
-	getNextTFile(filePathArray: string[], currentFilePath: string | undefined): TFile | null {
-		// `findIndex()` returns -1 if current file is not bookmarked, which gives
-		// simply `0` as next index, resulting in the first bookmarked file, which
-		// is what we want
-		const currentIndex = filePathArray.findIndex((path: string) => path === currentFilePath);
-
-		const nextIndex = (currentIndex + 1) % filePathArray.length;
-		const nextFilePath = filePathArray[nextIndex] || "";
-		return this.app.vault.getFileByPath(nextFilePath);
-	}
-
-	async bookmarkCycler(): Promise<void> {
-		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-		const editor = view?.editor;
-		const mode = view?.getState().mode;
-
-		// get BOOKMARKS
-		const bookmarkObjs = this.app.internalPlugins.plugins.bookmarks?.instance?.getBookmarks() || [];
-		const bookmarkPaths = bookmarkObjs
-			.reduce((acc: string[], bookmark) => {
-				if (bookmark.type === "file") {
-					const file = this.app.vault.getAbstractFileByPath(bookmark.path as string);
-					if (file instanceof TFile && bookmark.path) acc.push(bookmark.path);
-				}
-				return acc;
-			}, [])
-			.sort((a, b) => {
-				const aTfile = this.app.vault.getFileByPath(a);
-				const bTfile = this.app.vault.getFileByPath(b);
-				if (!aTfile || !bTfile) return 0;
-				return bTfile.stat.mtime - aTfile.stat.mtime;
-			});
-		if (bookmarkObjs.length === 0) {
-			new Notice("There are no bookmarked files.");
-			return;
-		}
-
-		// get SELECTION
-		let selection = "";
-		if (editor && mode === "source") {
-			selection = editor.getSelection();
-		} else if (mode === "preview") {
-			// in preview mode, get selection from active window (electron)
-			// CAVEAT only retrieves plain text without markup though
-			// biome-ignore lint/correctness/noUndeclaredVariables: electron
-			selection = activeWindow?.getSelection()?.toString() || "";
-		}
-
-		// NO selection: cycle through bookmarks files
-		// WITH selection: append to last modified bookmark
-		if (!selection) {
-			const currentFilePath = this.app.workspace.getActiveFile()?.path;
-
-			// `findIndex()` returns -1 if current file is not bookmarked, which gives
-			// simply `0` as next index, resulting in the first bookmarked file, which
-			// is what we want
-			const currentIndex = bookmarkPaths.findIndex((path: string) => path === currentFilePath);
-			const nextIndex = (currentIndex + 1) % bookmarkPaths.length;
-			const nextFilePath = bookmarkPaths[nextIndex] || "";
-			const nextFile = this.app.vault.getFileByPath(nextFilePath);
-			if (!nextFile) {
-				new Notice("There are no valid bookmarked files.");
-				return;
-			}
-			if (nextFile.path === currentFilePath) {
-				new Notice("Already at the sole starred file.");
-				return;
-			}
-			this.app.workspace.getLeaf().openFile(nextFile);
-		} else {
-			const numberOfCursors = editor?.listSelections().length || 0;
-			if (numberOfCursors > 1) {
-				new Notice("Multiple Selections are not supported.");
-				return;
-			}
-			const firstStarTFile = this.app.vault.getFileByPath(bookmarkPaths[0] as string);
-			if (!firstStarTFile) {
-				new Notice("There are no valid bookmarked files.");
-				return;
-			}
-			await this.app.vault.append(firstStarTFile, selection + "\n");
-			new Notice(`Appended to "${firstStarTFile.basename}":\n\n"${selection}"`);
-		}
 	}
 }
