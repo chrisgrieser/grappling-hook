@@ -1,19 +1,30 @@
-import { MarkdownView, Notice, TFile } from "obsidian";
+import { App, MarkdownView, Notice } from "obsidian";
 import GrapplingHook from "src/main";
+import { BookmarkItem } from "src/obsidian-undocumented-api";
 
-export async function bookmarkCycler(plugin: GrapplingHook): Promise<void> {
-	const app = plugin.app;
-	const view = app.workspace.getActiveViewOfType(MarkdownView);
-	const editor = view?.editor;
-	const mode = view?.getState().mode;
+async function readBookmarksJson(app: App): Promise<BookmarkItem[]> {
+	let rawStr = "";
+	try {
+		rawStr = await app.vault.adapter.read(app.vault.configDir + "/bookmarks.json");
+	} catch (_error) {
+		// errors if file does not exist
+		return [];
+	}
+	const bookmarkObjs: BookmarkItem[] = JSON.parse(rawStr).items;
+	return bookmarkObjs;
+}
 
-	// get BOOKMARKS
-	const bookmarkObjs = app.internalPlugins.plugins.bookmarks?.instance?.getBookmarks() || [];
+async function getBookmarkedFilesSortedByMtime(app: App): Promise<string[]> {
+	// INFO fallback to bookmarks.json if bookmarks plugin is not enabled
+	const bookmarkObjs =
+		app.internalPlugins.plugins.bookmarks?.instance?.getBookmarks() ||
+		(await readBookmarksJson(app));
+
 	const bookmarkPaths = bookmarkObjs
 		.reduce((acc: string[], bookmark) => {
-			if (bookmark.type === "file") {
-				const file = app.vault.getAbstractFileByPath(bookmark.path as string);
-				if (file instanceof TFile && bookmark.path) acc.push(bookmark.path);
+			if (bookmark.type === "file" && bookmark.path) {
+				const fileExists = app.vault.getFileByPath(bookmark.path);
+				if (fileExists) acc.push(bookmark.path);
 			}
 			return acc;
 		}, [])
@@ -23,8 +34,28 @@ export async function bookmarkCycler(plugin: GrapplingHook): Promise<void> {
 			if (!aTfile || !bTfile) return 0;
 			return bTfile.stat.mtime - aTfile.stat.mtime;
 		});
+	return bookmarkPaths;
+}
 
-	if (bookmarkObjs.length === 0) {
+//──────────────────────────────────────────────────────────────────────────────
+
+export async function openLastModifiedBookmark(plugin: GrapplingHook) {
+	const lastBookmark = (await getBookmarkedFilesSortedByMtime(plugin.app))[0];
+	if (!lastBookmark) return;
+	const file = plugin.app.vault.getFileByPath(lastBookmark);
+	if (!file) return;
+	await plugin.app.workspace.getLeaf().openFile(file);
+}
+
+export async function bookmarkCycler(plugin: GrapplingHook): Promise<void> {
+	const app = plugin.app;
+	const view = app.workspace.getActiveViewOfType(MarkdownView);
+	const editor = view?.editor;
+	const mode = view?.getState().mode;
+
+	// get BOOKMARKS
+	const bookmarkPaths = await getBookmarkedFilesSortedByMtime(app);
+	if (bookmarkPaths.length === 0) {
 		new Notice("There are no bookmarked files.");
 		return;
 	}
@@ -60,7 +91,7 @@ export async function bookmarkCycler(plugin: GrapplingHook): Promise<void> {
 			new Notice("Already at the sole starred file.");
 			return;
 		}
-		app.workspace.getLeaf().openFile(nextFile);
+		await app.workspace.getLeaf().openFile(nextFile);
 	} else {
 		const numberOfCursors = editor?.listSelections().length || 0;
 		if (numberOfCursors > 1) {

@@ -18,7 +18,7 @@ export function updateStatusbar(plugin: GrapplingHook): void {
 	const altTFile = getAlternateNote(plugin);
 	let text = altTFile ? altTFile.basename : "";
 	if (text.length > threshold) text = text.slice(0, threshold) + "…";
-	plugin.altFileInStatusbar.setText(text);
+	plugin.statusbar.setText(text);
 }
 
 export function openAlternateNote(plugin: GrapplingHook): void {

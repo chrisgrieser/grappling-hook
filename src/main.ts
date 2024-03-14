@@ -1,14 +1,25 @@
 import { Plugin } from "obsidian";
 import { openAlternateNote, updateStatusbar } from "./commands/altfile";
-import { bookmarkCycler } from "./commands/bookmark-cycler";
+import { bookmarkCycler, openLastModifiedBookmark } from "./commands/bookmark-cycler";
 import { cycleFilesInCurrentFolder } from "./commands/cycle-files-in-folder";
 import { cycleTabsAcrossSplits } from "./commands/cycle-tabs-across-splits";
+import { DEFAULT_SETTINGS, GrapplingHookSettingsMenu } from "./settings";
 
 export default class GrapplingHook extends Plugin {
-	altFileInStatusbar = this.addStatusBarItem();
+	statusbar = this.addStatusBarItem();
+	settings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
+	cssclass = this.manifest.id;
 
-	override onload(): void {
+	override async onload(): Promise<void> {
 		console.info(this.manifest.name + " Plugin loaded.");
+
+		// settings & open last modified (if enabled)
+		await this.loadSettings();
+		this.addSettingTab(new GrapplingHookSettingsMenu(this));
+		if (this.settings.openLastModifiedBookmarkOnStartup) {
+			// `onLayoutReady` only triggers when Obsidian has finished loading
+			this.app.workspace.onLayoutReady(() => openLastModifiedBookmark(this));
+		}
 
 		// statusbar
 		updateStatusbar(this); // initialize
@@ -23,7 +34,7 @@ export default class GrapplingHook extends Plugin {
 		this.addCommand({
 			id: "cycle-starred-notes",
 			name: "Cycle bookmarked notes / send selection to last bookmark",
-			callback: () => bookmarkCycler(this),
+			callback: async () => await bookmarkCycler(this),
 		});
 		this.addCommand({
 			id: "cycle-tabs-across-splits",
@@ -42,7 +53,16 @@ export default class GrapplingHook extends Plugin {
 		});
 	}
 
+	//───────────────────────────────────────────────────────────────────────────
+
 	override onunload(): void {
 		console.info(this.manifest.name + " Plugin unloaded.");
+	}
+
+	async loadSettings(): Promise<void> {
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+	}
+	async saveSettings(): Promise<void> {
+		await this.saveData(this.settings);
 	}
 }
