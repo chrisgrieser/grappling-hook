@@ -10,19 +10,22 @@ build:
 	open "obsidian://open?vault=$$vault_name" && \
 	open "obsidian://advanced-uri?vault=$$vault_name&commandid=app%253Areload"
 
-# install dependencies, build, enable git hooks
-init:
-	npm install && \
-	node esbuild.config.mjs
-	git config core.hooksPath .githooks
-
-format: 
+format:
 	npx biome format --write "$$(git rev-parse --show-toplevel)"
 	npx markdownlint-cli --fix --ignore="node_modules" "$$(git rev-parse --show-toplevel)"
 
-check:
+check-all:
 	zsh ./.githooks/pre-commit
+
+check-tsc:
+	npx tsc --noEmit --skipLibCheck --strict && echo "Typescript OK"
 
 release:
 	zsh ./.release.sh
+
+# install dependencies, build, enable git hooks
+init:
+	npm install && \
+	node esbuild.config.mjs ; \
+	git config core.hooksPath .githooks
 
