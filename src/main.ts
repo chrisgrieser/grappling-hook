@@ -1,8 +1,9 @@
-import { Plugin } from "obsidian";
+import { Editor, Plugin } from "obsidian";
 import { openAlternateNote, updateStatusbar } from "./commands/altfile";
 import { bookmarkCycler, openLastModifiedBookmark } from "./commands/bookmark-cycler";
 import { cycleFilesInCurrentFolder } from "./commands/cycle-files-in-folder";
 import { cycleTabsAcrossSplits } from "./commands/cycle-tabs-across-splits";
+import { openFirstUrlInFile } from "./commands/open-first-url-in-file";
 import { DEFAULT_SETTINGS, GrapplingHookSettingsMenu } from "./settings";
 
 export default class GrapplingHook extends Plugin {
@@ -50,6 +51,11 @@ export default class GrapplingHook extends Plugin {
 			id: "previous-file-in-current-folder",
 			name: "Previous file in current folder",
 			callback: () => cycleFilesInCurrentFolder(this, "prev"),
+		});
+		this.addCommand({
+			id: "open-first-url-in-file",
+			name: "Open first url in file",
+			editorCallback: (editor: Editor) => openFirstUrlInFile(editor),
 		});
 	}
 

@@ -3,8 +3,7 @@
 ![Last Release](https://img.shields.io/github/v/release/chrisgrieser/grappling-hook?label=Latest%20Release&style=plastic)
 
 Obsidian Plugin for blazingly fast file switching. For those who find the Quick
-Switcher still too slow. [Endorsed by Nick
-Milo.](https://youtu.be/mcrcRXp5d8A?t=462)
+Switcher still too slow. [Endorsed by Nick Milo.](https://youtu.be/mcrcRXp5d8A?t=462)
 
 <!-- toc -->
 
@@ -13,6 +12,7 @@ Milo.](https://youtu.be/mcrcRXp5d8A?t=462)
 	* [Alternate note](#alternate-note)
 	* [Cycle tab/split](#cycle-tabsplit)
 	* [Next/previous file in current folder](#nextprevious-file-in-current-folder)
+	* [Open first URL in file](#open-first-url-in-file)
 - [Installation](#installation)
 - [About the developer](#about-the-developer)
 
@@ -31,7 +31,7 @@ When you have text selected, the bookmark cycler switches to its alternative
 mode, and copies the selected text to the last modified bookmarked note,
 regardless the note you are.
 
-> __Note__  
+> [!NOTE]
 > Only bookmarked *files* are considered. Bookmarked *blocks* or *headers* are ignored.
 
 ![Illustration bookmark cycler](./illustration/bookmark-cycler.png)
@@ -57,6 +57,13 @@ splits, meaning you can cycle through *all* open tabs with one hotkey.
 ### Next/previous file in current folder
 Cycles through all files in the current folder, in alphabetical order.
 
+### Open first URL in file
+Opens the first URL (external link) found in the file. This includes the
+frontmatter. Currently, works only in Source Mode and Live Preview.
+
+Note that this only works with URLs that are *actually* in the file, meaning URLs
+displayed via dataview or embedded notes are not supported.
+
 ## Installation
 ➡️ [Install in Obsidian](https://obsidian.md/plugins?id=grappling-hook)
 
@@ -68,10 +75,8 @@ economy and how software ecosystems manage the tension between innovation and
 compatibility. If you are interested in this subject, feel free to get in touch.
 
 - [Academic Website](https://chris-grieser.de/)
+- [Mastodon](https://pkm.social/@pseudometa)
 - [ResearchGate](https://www.researchgate.net/profile/Christopher-Grieser)
-- [Discord](https://discordapp.com/users/462774483044794368/)
-- [GitHub](https://github.com/chrisgrieser/)
-- [Twitter](https://twitter.com/pseudo_meta)
 - [LinkedIn](https://www.linkedin.com/in/christopher-grieser-ba693b17a/)
 
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'>
