@@ -6,6 +6,7 @@ import { cycleTabsAcrossSplits } from "./commands/cycle-tabs-across-splits";
 import { openFirstUrlInFile } from "./commands/open-first-url-in-file";
 import { DEFAULT_SETTINGS, GrapplingHookSettingsMenu } from "./settings";
 
+// biome-ignore lint/style/noDefaultExport: required for Obsidian plugins to work
 export default class GrapplingHook extends Plugin {
 	statusbar = this.addStatusBarItem();
 	settings = DEFAULT_SETTINGS; // only fallback value, overwritten in `onload`
