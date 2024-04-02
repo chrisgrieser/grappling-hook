@@ -4,7 +4,9 @@ import { getRootLeaves } from "src/utils";
 
 function getAlternateNote(plugin: GrapplingHook): TFile | null {
 	const recentFiles = plugin.app.workspace.getLastOpenFiles();
+	const currentFile = plugin.app.workspace.getActiveViewOfType(FileView)?.file?.path;
 	for (const filePath of recentFiles) {
+		if (filePath === currentFile) continue;
 		const altTFile = plugin.app.vault.getFileByPath(filePath);
 		if (altTFile) return altTFile; // checks file existence, e.g. for deleted files
 	}
