@@ -5,10 +5,12 @@ import { getRootLeaves } from "src/utils";
 function getAlternateNote(plugin: GrapplingHook): TFile | null {
 	const recentFiles = plugin.app.workspace.getLastOpenFiles();
 	const currentFile = plugin.app.workspace.getActiveViewOfType(FileView)?.file?.path;
+	const openableExtensions = ["md", "png", "pdf", "jpeg", "jpg"];
+
 	for (const filePath of recentFiles) {
-		if (filePath === currentFile) continue;
 		const altTFile = plugin.app.vault.getFileByPath(filePath);
-		if (altTFile) return altTFile; // checks file existence, e.g. for deleted files
+		const isOpenable = altTFile && openableExtensions.includes(altTFile.extension);
+		if (filePath !== currentFile && isOpenable) return altTFile;
 	}
 	return null;
 }
