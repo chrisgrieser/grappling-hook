@@ -73,7 +73,20 @@ export async function bookmarkCycler(plugin: GrapplingHook): Promise<void> {
 
 	// NO selection: cycle through bookmarks files
 	// WITH selection: append to last modified bookmark
-	if (!selection) {
+	if (selection) {
+		const numberOfCursors = editor?.listSelections().length || 0;
+		if (numberOfCursors > 1) {
+			new Notice("Multiple Selections are not supported.");
+			return;
+		}
+		const firstStarTFile = app.vault.getFileByPath(bookmarkPaths[0] as string);
+		if (!firstStarTFile) {
+			new Notice("There are no valid bookmarked files.");
+			return;
+		}
+		await app.vault.append(firstStarTFile, selection + "\n");
+		new Notice(`Appended to "${firstStarTFile.basename}":\n\n"${selection}"`);
+	} else {
 		const currentFilePath = app.workspace.getActiveFile()?.path;
 
 		// `findIndex()` returns -1 if current file is not bookmarked, which gives
@@ -92,18 +105,5 @@ export async function bookmarkCycler(plugin: GrapplingHook): Promise<void> {
 			return;
 		}
 		await app.workspace.getLeaf().openFile(nextFile);
-	} else {
-		const numberOfCursors = editor?.listSelections().length || 0;
-		if (numberOfCursors > 1) {
-			new Notice("Multiple Selections are not supported.");
-			return;
-		}
-		const firstStarTFile = app.vault.getFileByPath(bookmarkPaths[0] as string);
-		if (!firstStarTFile) {
-			new Notice("There are no valid bookmarked files.");
-			return;
-		}
-		await app.vault.append(firstStarTFile, selection + "\n");
-		new Notice(`Appended to "${firstStarTFile.basename}":\n\n"${selection}"`);
 	}
 }

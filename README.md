@@ -43,17 +43,16 @@ using the `Switch to Alternate Note` command moves you forward in history when
 you press it the second time. This allows you to rapidly switch between two
 files with only one hotkey. *This command is equivalent to vim's `:buffer #`.*  
 
-The name of the alternate file is also displayed in
-the status bar. If the alternate file is already open in another tab, it 
-switches to that tab. If not, the alternate file is opened in the current tab.
+The name of the alternate file is also displayed in the status bar. If the
+alternate file is already open in another tab, it switches to that tab. If not,
+the alternate file is opened in the current tab.
 
 ![Illustration alt-file](./illustration/alt-file.png)
 
-
 ### Cycle tab/split
 Like the Obsidian built-in command `Go to next tab`, but includes tabs in other
-splits, meaning you can cycle through *all* open tabs with one hotkey. 
-*This command similar to vim's `:<C-w>w`.* 
+splits, meaning you can cycle through *all* open tabs with one hotkey.
+*This command similar to vim's `:<C-w>w`.*
 
 ### Next/previous file in current folder
 Cycles through all files in the current folder, in alphabetical order.
