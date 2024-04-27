@@ -1,14 +1,15 @@
-.PHONY: build init format check release
+.PHONY: build format check-all check-tsc release init
 
-# build & open dev-vault
+# if on macOS, open dev-vault & create symlink to if needed
 build:
-	dev_vault_path="$$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Development" ; \
-	plugin_path="$$dev_vault_path/.obsidian/plugins/grappling-hook" && \
-	vault_name="$$(basename "$$dev_vault_path")" && \
-	node esbuild.config.mjs && \
-	cp -f main.js manifest.json styles.css "$$plugin_path" && \
-	open "obsidian://open?vault=$$vault_name" && \
-	open "obsidian://advanced-uri?vault=$$vault_name&commandid=app%253Areload"
+	dev_vault="$$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Development" ; \
+	node .esbuild.config.mjs && \
+	if [[ "$$OSTYPE" =~ darwin* ]] ; then \
+		plugin_path="$$dev_vault/.obsidian/plugins/quadro" ; \
+		[[ -e "$$plugin_path" ]] || ln -s "$$PWD" "$$plugin_path" ; \
+		vault_name=$$(basename "$$dev_vault") ; \
+		open "obsidian://open?vault=$$vault_name" ; \
+	fi
 
 format:
 	npx biome format --write "$$(git rev-parse --show-toplevel)"
@@ -21,11 +22,11 @@ check-tsc:
 	npx tsc --noEmit --skipLibCheck --strict && echo "Typescript OK"
 
 release:
-	zsh ./.release.sh
+	node .release.mjs
 
 # install dependencies, build, enable git hooks
 init:
 	npm install && \
-	node esbuild.config.mjs ; \
+	node .esbuild.config.mjs ; \
 	git config core.hooksPath .githooks
 
