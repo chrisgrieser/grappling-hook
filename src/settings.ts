@@ -5,6 +5,7 @@ import GrapplingHook from "./main";
 
 export const DEFAULT_SETTINGS = {
 	openLastModifiedBookmarkOnStartup: false,
+	keepBookmarksSidebarSorted: false,
 };
 export type GrapplingHookSettings = typeof DEFAULT_SETTINGS;
 
@@ -33,6 +34,21 @@ export class GrapplingHookSettingsMenu extends PluginSettingTab {
 			.addToggle((toggle) =>
 				toggle.setValue(settings.openLastModifiedBookmarkOnStartup).onChange(async (value) => {
 					settings.openLastModifiedBookmarkOnStartup = value;
+					await this.plugin.saveSettings();
+				}),
+			);
+
+		new Setting(containerEl)
+			.setName("Auto-sort items in bookmark sidebar by last modified time")
+			.setDesc(
+				"🧪 Experimental.\n" +
+					"Automatically sort the items in the bookmark sidebar by last modified time. " +
+					"This is useful, as the order of files in the sidebar reflects the order in which the bookmark-cycling-command navigates to files." +
+					"ℹ️ This only works for bookmarks that are not in a folder.",
+			)
+			.addToggle((toggle) =>
+				toggle.setValue(settings.keepBookmarksSidebarSorted).onChange(async (value) => {
+					settings.keepBookmarksSidebarSorted = value;
 					await this.plugin.saveSettings();
 				}),
 			);

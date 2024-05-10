@@ -106,3 +106,21 @@ export async function bookmarkCycler(plugin: GrapplingHook): Promise<void> {
 		await app.workspace.getLeaf().openFile(nextFile);
 	}
 }
+
+export function sortBookmarksSidebar(plugin: GrapplingHook) {
+	const { app, settings } = plugin;
+	const bookmarkPlugin = app.internalPlugins.plugins.bookmarks?.instance;
+	if (!settings.keepBookmarksSidebarSorted || !bookmarkPlugin) return;
+
+	bookmarkPlugin.items.sort((a, b) => {
+		if (!a.path && !b.path) return 0; // no `.path` = non-file-bookmarks
+		if (!a.path) return 1; // move non-files down
+		if (!b.path) return -1;
+
+		const aTfile = app.vault.getFileByPath(a.path);
+		const bTfile = app.vault.getFileByPath(b.path);
+		if (!aTfile || !bTfile) return 0; // no tfile = file does not exist anymore
+		return bTfile.stat.mtime - aTfile.stat.mtime;
+	});
+	bookmarkPlugin._onItemsChanged(true); // trigger sidebar update
+}

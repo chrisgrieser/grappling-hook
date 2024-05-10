@@ -3,7 +3,7 @@ import "obsidian";
 interface BookmarkItem {
 	type: string;
 	title: string; // filename
-	path?: string;
+	path?: string; // no `.path` = non-file-bookmarks
 	items: BookmarkItem[]; // if type "group", then can recursively contain itself
 }
 
@@ -15,6 +15,7 @@ declare module "obsidian" {
 					instance: {
 						items: BookmarkItem[];
 						getBookmarks: () => BookmarkItem[];
+						_onItemsChanged(change: boolean): void; // update bookmarks sidebar
 					};
 				};
 			};

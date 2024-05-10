@@ -1,6 +1,10 @@
 import { Editor, Plugin } from "obsidian";
 import { openAlternateNote, updateStatusbar } from "./commands/altfile";
-import { bookmarkCycler, openLastModifiedBookmark } from "./commands/bookmark-cycler";
+import {
+	bookmarkCycler,
+	openLastModifiedBookmark,
+	sortBookmarksSidebar,
+} from "./commands/bookmark-cycler";
 import { cycleFilesInCurrentFolder } from "./commands/cycle-files-in-folder";
 import { cycleTabsAcrossSplits } from "./commands/cycle-tabs-across-splits";
 import { openFirstUrlInFile } from "./commands/open-first-url-in-file";
@@ -26,6 +30,9 @@ export default class GrapplingHook extends Plugin {
 		// statusbar
 		updateStatusbar(this); // initialize
 		this.registerEvent(this.app.workspace.on("file-open", () => updateStatusbar(this)));
+
+		// sort
+		this.registerEvent(this.app.workspace.on("file-open", () => sortBookmarksSidebar(this)));
 
 		// commands
 		this.addCommand({
