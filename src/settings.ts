@@ -41,10 +41,9 @@ export class GrapplingHookSettingsMenu extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName("Auto-sort items in bookmark sidebar by last modified time")
 			.setDesc(
-				"🧪 Experimental.\n" +
-					"Automatically sort the items in the bookmark sidebar by last modified time. " +
-					"This is useful, as the order of files in the sidebar reflects the order in which the bookmark-cycling-command navigates to files." +
-					"ℹ️ This only works for bookmarks that are not in a folder.",
+				"[🧪 Experimental] " +
+					"This will make the order of bookmarks in the sidebar reflect the order the bookmark-cycling command will move through files. " +
+					"(Note that this feature only works for bookmarks that are not in a folder.)",
 			)
 			.addToggle((toggle) =>
 				toggle.setValue(settings.keepBookmarksSidebarSorted).onChange(async (value) => {
