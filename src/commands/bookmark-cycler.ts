@@ -67,7 +67,6 @@ export async function bookmarkCycler(plugin: GrapplingHook): Promise<void> {
 	} else if (mode === "preview") {
 		// in preview mode, get selection from active window (electron)
 		// CAVEAT only retrieves plain text without markup though
-		// biome-ignore lint/correctness/noUndeclaredVariables: electron
 		selection = activeWindow?.getSelection()?.toString() || "";
 	}
 
