@@ -5,7 +5,7 @@ build:
 	dev_vault="$$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Development" ; \
 	node .esbuild.config.mjs && \
 	if [[ "$$OSTYPE" =~ darwin* ]] ; then \
-		plugin_path="$$dev_vault/.obsidian/plugins/quadro" ; \
+		plugin_path="$$dev_vault/.obsidian/plugins/grappling-hook" ; \
 		[[ -e "$$plugin_path" ]] || ln -s "$$PWD" "$$plugin_path" ; \
 		vault_name=$$(basename "$$dev_vault") ; \
 		open "obsidian://open?vault=$$vault_name" ; \
