@@ -119,7 +119,9 @@ export function sortBookmarksSidebar(plugin: GrapplingHook) {
 
 		const aTfile = app.vault.getFileByPath(a.path);
 		const bTfile = app.vault.getFileByPath(b.path);
-		if (!aTfile || !bTfile) return 0; // no tfile = file does not exist anymore
+		if (!aTfile && !bTfile) return 0; // no tfile = file does not exist anymore
+		if (!aTfile) return 1; // move non-existing down
+		if (!bTfile) return -1;
 		return bTfile.stat.mtime - aTfile.stat.mtime;
 	});
 	bookmarkPlugin._onItemsChanged(true); // trigger sidebar update
