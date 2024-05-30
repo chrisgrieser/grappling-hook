@@ -52,12 +52,12 @@ export default class GrapplingHook extends Plugin {
 		});
 		this.addCommand({
 			id: "next-file-in-current-folder",
-			name: "Next file in current folder",
+			name: "Next note in current folder",
 			callback: () => cycleFilesInCurrentFolder(this, "next"),
 		});
 		this.addCommand({
 			id: "previous-file-in-current-folder",
-			name: "Previous file in current folder",
+			name: "Previous note in current folder",
 			callback: () => cycleFilesInCurrentFolder(this, "prev"),
 		});
 		this.addCommand({

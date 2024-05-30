@@ -12,21 +12,21 @@ export function cycleFilesInCurrentFolder(plugin: GrapplingHook, dir: "next" | "
 		return;
 	}
 
-	const filesInFolder = currentFile.parent.children
-		.filter((file) => file instanceof TFile)
+	const mdFileInFolder = currentFile.parent.children
+		.filter((file) => file instanceof TFile && file.extension === "md")
 		.sort((a, b) => (a.name < b.name ? -1 : 1)) as TFile[];
 
-	if (filesInFolder.length < 2) {
+	if (mdFileInFolder.length < 2) {
 		new Notice("No other files in this folder to switch to.");
 		return;
 	}
 
-	const currentIndex = filesInFolder.findIndex((file) => file.path === currentFile.path);
+	const currentIndex = mdFileInFolder.findIndex((file) => file.path === currentFile.path);
 	const nextIndex =
 		dir === "next"
-			? (currentIndex + 1) % filesInFolder.length
-			: (currentIndex + filesInFolder.length - 1) % filesInFolder.length;
-	const nextFile = filesInFolder[nextIndex] as TFile;
+			? (currentIndex + 1) % mdFileInFolder.length
+			: (currentIndex + mdFileInFolder.length - 1) % mdFileInFolder.length;
+	const nextFile = mdFileInFolder[nextIndex] as TFile;
 
 	plugin.app.workspace.getLeaf().openFile(nextFile);
 }
