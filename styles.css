@@ -1,4 +1,3 @@
-
 /* alt file indicator */
 .status-bar-item.plugin-grappling-hook:not(:empty)::before {
 	content: "↪";
