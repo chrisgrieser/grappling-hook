@@ -6,7 +6,7 @@ plugin_path := dev_vault + "/.obsidian/plugins/" + `basename "$PWD"`
 #───────────────────────────────────────────────────────────────────────────────
 
 _build:
-    node .esbuild.config.mjs
+    node .esbuild.mjs
 
 # if on macOS, open dev-vault & create symlink to it if needed
 build-and-reload: _build
