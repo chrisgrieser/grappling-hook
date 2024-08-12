@@ -5,8 +5,11 @@
 	"version": "1.2.3",
 	"minAppVersion": "1.5.8",
 	"isDesktopOnly": false,
-	"author": "pseudometa",
-	"fundingUrl": "https://ko-fi.com/pseudometa",
-	"authorUrl": "https://chris-grieser.de/",
-	"helpUrl": "https://github.com/chrisgrieser/grappling-hook#readme"
+	"author": "pseudometa (Chris Grieser)",
+	"authorUrl": "https://github.com/chrisgrieser/grappling-hook",
+	"helpUrl": "https://github.com/chrisgrieser/grappling-hook#readme",
+	"fundingUrl": {
+		"Ko-Fi": "https://ko-fi.com/pseudometa",
+		"PayPal": "https://www.paypal.me/ChrisGrieser"
+	}
 }
