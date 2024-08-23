@@ -2,7 +2,7 @@ set quiet := true
 
 alias i := init
 
-vault_path := "$HOME/main-vault"
+vault_path := "$HOME/Vaults/main-vault"
 
 #───────────────────────────────────────────────────────────────────────────────
 
