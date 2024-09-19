@@ -7,7 +7,6 @@ export const DEFAULT_SETTINGS = {
 	openLastModifiedBookmarkOnStartup: false,
 	keepBookmarksSidebarSorted: false,
 };
-export type GrapplingHookSettings = typeof DEFAULT_SETTINGS;
 
 //──────────────────────────────────────────────────────────────────────────────
 
