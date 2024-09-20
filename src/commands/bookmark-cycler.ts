@@ -47,6 +47,7 @@ export async function openLastModifiedBookmark(plugin: GrapplingHook) {
 	await plugin.app.workspace.getLeaf().openFile(file);
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: later
 export async function bookmarkCycler(plugin: GrapplingHook): Promise<void> {
 	const app = plugin.app;
 	const view = app.workspace.getActiveViewOfType(MarkdownView);
