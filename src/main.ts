@@ -38,32 +38,32 @@ export default class GrapplingHook extends Plugin {
 		this.addCommand({
 			id: "alternate-note",
 			name: "Switch to alternate note",
-			callback: () => openAlternateNote(this),
+			callback: (): void => openAlternateNote(this),
 		});
 		this.addCommand({
 			id: "cycle-starred-notes",
 			name: "Cycle bookmarked notes / send selection to last bookmark",
-			callback: async () => await bookmarkCycler(this),
+			callback: async (): Promise<void> => await bookmarkCycler(this),
 		});
 		this.addCommand({
 			id: "cycle-tabs-across-splits",
 			name: "Cycle tabs (across splits)",
-			callback: () => cycleTabsAcrossSplits(this),
+			callback: (): void => cycleTabsAcrossSplits(this),
 		});
 		this.addCommand({
 			id: "next-file-in-current-folder",
 			name: "Next note in current folder",
-			callback: () => cycleFilesInCurrentFolder(this, "next"),
+			callback: (): void => cycleFilesInCurrentFolder(this, "next"),
 		});
 		this.addCommand({
 			id: "previous-file-in-current-folder",
 			name: "Previous note in current folder",
-			callback: () => cycleFilesInCurrentFolder(this, "prev"),
+			callback: (): void => cycleFilesInCurrentFolder(this, "prev"),
 		});
 		this.addCommand({
 			id: "open-first-url-in-file",
 			name: "Open first url in file",
-			editorCallback: (editor: Editor) => openFirstUrlInFile(editor),
+			editorCallback: (editor: Editor): void => openFirstUrlInFile(editor),
 		});
 	}
 

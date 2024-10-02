@@ -39,7 +39,7 @@ async function getBookmarkedFilesSortedByMtime(app: App): Promise<string[]> {
 
 //──────────────────────────────────────────────────────────────────────────────
 
-export async function openLastModifiedBookmark(plugin: GrapplingHook) {
+export async function openLastModifiedBookmark(plugin: GrapplingHook): Promise<void> {
 	const lastBookmark = (await getBookmarkedFilesSortedByMtime(plugin.app))[0];
 	if (!lastBookmark) return;
 	const file = plugin.app.vault.getFileByPath(lastBookmark);
@@ -108,7 +108,7 @@ export async function bookmarkCycler(plugin: GrapplingHook): Promise<void> {
 	}
 }
 
-export function sortBookmarksSidebar(plugin: GrapplingHook) {
+export function sortBookmarksSidebar(plugin: GrapplingHook): void {
 	const { app, settings } = plugin;
 	const bookmarkPlugin = app.internalPlugins.plugins.bookmarks?.instance;
 	if (!settings.keepBookmarksSidebarSorted || !bookmarkPlugin) return;
