@@ -1,6 +1,6 @@
 set quiet := true
 
-test_vault := "$HOME/Vaults/writing-vault/"
+test_vault := "$HOME/writing-vault/"
 
 #───────────────────────────────────────────────────────────────────────────────
 
@@ -9,10 +9,15 @@ build-and-reload:
     #!/usr/bin/env zsh
     node .esbuild.mjs
 
+    if [ ! -d "{{ test_vault }}/.obsidian" ]; then
+        echo "Vault not found: {{ test_vault }}/.obsidian"
+        return 1
+    fi
     plugin_id=$(grep '"id"' "./manifest.json" | cut -d'"' -f4)
-    mkdir -p "{{ test_vault }}/.obsidian/plugins/$plugin_id/"
+    mkdir -p "{{ test_vault }}/.obsidian/plugins/$plugin_id"
     cp -f "main.js" "{{ test_vault }}/.obsidian/plugins/$plugin_id/main.js"
     cp -f "manifest.json" "{{ test_vault }}/.obsidian/plugins/$plugin_id/manifest.json"
+    cp -f "styles.css" "{{ test_vault }}/.obsidian/plugins/$plugin_id/styles.css"
     vault_name=$(basename "{{ test_vault }}")
     open "obsidian://open?vault=$vault_name"
 
