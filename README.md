@@ -8,11 +8,11 @@ Switcher still too slow. [Endorsed by Nick Milo.](https://youtu.be/mcrcRXp5d8A?t
 <!-- toc -->
 
 - [Commands](#commands)
-	* [Bookmark cycler](#bookmark-cycler)
-	* [Alternate note](#alternate-note)
-	* [Cycle tab/split](#cycle-tabsplit)
-	* [Next/previous file in current folder](#nextprevious-file-in-current-folder)
-	* [Open first URL in file](#open-first-url-in-file)
+    - [Bookmark cycler](#bookmark-cycler)
+    - [Alternate note](#alternate-note)
+    - [Cycle tab/split](#cycle-tabsplit)
+    - [Next/previous file in current folder](#nextprevious-file-in-current-folder)
+    - [Open first URL in file](#open-first-url-in-file)
 - [Installation](#installation)
 - [About the developer](#about-the-developer)
 
@@ -61,8 +61,8 @@ Cycles through all files in the current folder, in alphabetical order.
 Opens the first URL (external link) found in the file. This includes the
 frontmatter. Currently, works only in Source Mode and Live Preview.
 
-Note that this only works with URLs that are *actually* in the file, meaning URLs
-displayed via dataview or embedded notes are not supported.
+Note that this only works with URLs that are *actually* in the file, meaning
+URLs displayed via dataview or embedded notes are not supported.
 
 ## Installation
 ➡️ [Install in Obsidian](https://obsidian.md/plugins?id=grappling-hook)
@@ -81,9 +81,9 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'>
 <img
-	height='36'
-	style='border:0px;height:36px;'
-	src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
-	border='0'
-	alt='Buy Me a Coffee at ko-fi.com'
+    height='36'
+    style='border:0px;height:36px;'
+    src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
+    border='0'
+    alt='Buy Me a Coffee at ko-fi.com'
 /></a>
