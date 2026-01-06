@@ -1,10 +1,6 @@
 import { Editor, Plugin } from "obsidian";
+import { bookmarkCycler, sortBookmarksSidebar } from "src/commands/bookmark-cycler";
 import { openAlternateNote, updateStatusbar } from "./commands/altfile";
-import {
-	bookmarkCycler,
-	openLastModifiedBookmark,
-	sortBookmarksSidebar,
-} from "./commands/bookmark-cycler";
 import { cycleFilesInCurrentFolder } from "./commands/cycle-files-in-folder";
 import { cycleTabsAcrossSplits } from "./commands/cycle-tabs-across-splits";
 import { openFirstUrlInFile } from "./commands/open-first-url-in-file";
@@ -22,10 +18,6 @@ export default class GrapplingHook extends Plugin {
 		// settings & open last modified (if enabled)
 		await this.loadSettings();
 		this.addSettingTab(new GrapplingHookSettingsMenu(this));
-		if (this.settings.openLastModifiedBookmarkOnStartup) {
-			// `onLayoutReady` only triggers when Obsidian has finished loading
-			this.app.workspace.onLayoutReady(() => openLastModifiedBookmark(this));
-		}
 
 		// statusbar
 		updateStatusbar(this); // initialize
