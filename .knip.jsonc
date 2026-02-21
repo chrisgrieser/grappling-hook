@@ -3,8 +3,5 @@
 	"$schema": "https://unpkg.com/knip@5/schema-jsonc.json",
 	"entry": ["src/main.ts"],
 	"project": ["**/*.ts"],
-	"ignoreDependencies": [
-		"@biomejs/biome", // used only in pre-commit hook / task
-		"markdownlint-cli" // used only in pre-commit hook / task
-	]
+	"ignoreDependencies": ["@biomejs/biome"] // used only in pre-commit hook / task
 }
