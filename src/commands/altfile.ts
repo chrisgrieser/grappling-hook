@@ -5,7 +5,7 @@ import { getRootLeaves } from "src/utils";
 function getAlternateNote(plugin: GrapplingHook): TFile | null {
 	const recentFiles = plugin.app.workspace.getLastOpenFiles();
 	const currentFile = plugin.app.workspace.getActiveViewOfType(FileView)?.file?.path;
-	const openableExtensions = ["md", "png", "pdf", "jpeg", "jpg"];
+	const openableExtensions = ["md", "canvas", "base", "png", "pdf", "jpeg", "jpg"];
 
 	for (const filePath of recentFiles) {
 		const altTFile = plugin.app.vault.getFileByPath(filePath);
